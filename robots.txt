@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://aasjadalkhygany-stack.github.io/CINEMIND_X/sitemap.xml
