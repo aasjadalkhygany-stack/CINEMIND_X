@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>CINEMIND_x — لوحة الإدارة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+:root{color-scheme:dark;--bg:#0b0907;--ink:#f2e8d5;--card:#16110d;--line:#3a2d1c;--accent:#d4a64a;--mute:#a8987c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Cairo',Tahoma,Arial,sans-serif;padding:14px;min-height:100%}
+.w{max-width:960px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:12px;margin:4px 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.br{font-family:'Cinzel',serif;font-weight:800;font-size:1.4rem;letter-spacing:.12em;background:linear-gradient(90deg,#f3d58a,#b78a35);-webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none}
+a{color:var(--accent)}
+input,select,button,textarea{font:inherit;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px}
+button{cursor:pointer}
+button.p{background:var(--accent);border-color:var(--accent);color:#1a1206;font-weight:800}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.box{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:16px;background:#100c09}
+.box h2{margin:0 0 10px;font-size:1.1rem;color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.row>input,.row>select{flex:1;min-width:130px}
+.full{width:100%;margin-bottom:10px;direction:ltr;text-align:left}
+textarea{width:100%;min-height:130px;direction:ltr;font-family:monospace;font-size:.8rem;margin-bottom:10px}
+.res{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;color:var(--mute);font-size:.85rem}
+.res button{font-size:.8rem;padding:5px 9px}
+.msg{color:var(--mute);font-size:.9rem;line-height:1.8}
+.msg.err{color:#e8c25a}
+.note{background:#1a1408;border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--mute);font-size:.85rem;line-height:1.8;margin:0 0 16px}
+.grp{border-top:1px solid var(--line);padding:10px 0}
+.gh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.src{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:center;padding:6px 0;font-size:.88rem}
+.src code{grid-column:1/-1;color:var(--mute);font-size:.75rem;word-break:break-all;text-align:left}
+.src .act{grid-column:1/-1;display:flex;gap:6px}
+.src .act button{padding:4px 10px;font-size:.8rem}
+.tag{background:var(--accent);color:#1a1206;border-radius:6px;padding:1px 8px;font-size:.75rem;font-weight:800}
+</style>
+</head>
+<body>
+<div class="w">
+  <header class="hd"><a class="br" href="./">CINEMIND</a><span class="msg">لوحة الإدارة</span></header>
+  <p class="note">التعديلات هنا تُحفظ في هذا المتصفح فقط. لكي يراها الزوار: انسخ ناتج قسم «التصدير» وضعه في <b dir="ltr">data/sources.json</b> على GitHub، ثم اضغط «مسح التعديلات المحلية» ليقرأ متصفحك الملف المنشور. أضف فقط مصادر تملك حقوقها أو لديك إذن بتضمينها.</p>
+
+  <section class="box">
+    <h2 id="ft">إضافة سيرفر</h2>
+    <div class="row">
+      <select id="kind"><option value="movie">فيلم</option><option value="tv">مسلسل</option></select>
+      <input id="sq" type="search" placeholder="ابحث باسم العمل في TMDB">
+      <button id="sb" type="button">بحث</button>
+    </div>
+    <div class="res" id="res"></div>
+    <div class="row">
+      <input id="tid" type="number" min="1" placeholder="رقم TMDB">
+      <input id="se" type="number" min="0" placeholder="الموسم (اختياري)" hidden>
+      <input id="ep" type="number" min="1" placeholder="الحلقة (اختياري)" hidden>
+    </div>
+    <div class="row">
+      <select id="st"><option value="mp4">MP4 مباشر</option><option value="hls">HLS (m3u8)</option><option value="embed">Embed (iframe)</option></select>
+      <input id="lb" placeholder="اسم السيرفر، مثل: سيرفر 1">
+      <input id="qu" placeholder="الجودة، مثل: 1080p">
+    </div>
+    <input id="url" class="full" type="url" placeholder="https://...">
+    <div class="row"><button class="p" id="save" type="button">إضافة</button><button id="cancel" type="button" hidden>إلغاء التعديل</button></div>
+    <div class="msg" id="fm"></div>
+  </section>
+
+  <section class="box">
+    <h2>السيرفرات الحالية</h2>
+    <div id="list"></div>
+  </section>
+
+  <section class="box">
+    <h2>تبديل المزوّد دفعة واحدة</h2>
+    <div class="row">
+      <input id="ob" class="full" placeholder="بداية الرابط القديم: https://old.example.com">
+      <input id="nb" class="full" placeholder="بداية الرابط الجديد: https://new.example.com">
+    </div>
+    <button id="rb" type="button">استبدال في كل المصادر</button>
+    <div class="msg" id="rm"></div>
+  </section>
+
+  <section class="box">
+    <h2>التصدير والاستيراد</h2>
+    <textarea id="ex" readonly></textarea>
+    <div class="row"><button class="p" id="cp" type="button">نسخ</button><button id="dl" type="button">تنزيل sources.json</button></div>
+    <textarea id="im" placeholder="الصق JSON هنا للاستيراد"></textarea>
+    <div class="row"><button id="ib" type="button">استيراد</button><button id="rs" type="button">مسح التعديلات المحلية</button></div>
+    <div class="msg" id="xm"></div>
+  </section>
+</div>
+<script type="module">
+import { SourceStore, keyOf } from "./js/sources.js";
+import { tmdb } from "./js/tmdb.js";
+import { CONFIG } from "./js/config.js";
+
+const $ = (id) => document.getElementById(id);
+const esc = (t = "") => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const store = await new SourceStore().load(CONFIG.sourcesUrl);
+let editing = null;
+
+const say = (id, t, err) => { $(id).textContent = t; $(id).className = "msg" + (err ? " err" : ""); };
+const label = (k) => {
+  const [t, id, s, e] = k.split(":");
+  return t === "movie" ? `فيلم ${id}` : s != null ? `مسلسل ${id} — موسم ${s} حلقة ${e}` : `مسلسل ${id} (كل المسلسل)`;
+};
+const watchUrl = (k) => {
+  const [t, id, s, e] = k.split(":");
+  return `watch.html?type=${t}&id=${id}` + (s != null ? `&s=${s}&e=${e}` : "");
+};
+function currentKey() {
+  const id = +$("tid").value;
+  if (!id) throw new Error("أدخل رقم TMDB أو اختر عملاً من نتائج البحث.");
+  if ($("kind").value === "movie") return keyOf("movie", id);
+  const s = $("se").value, e = $("ep").value;
+  if (s === "" && e === "") return keyOf("tv", id);
+  if (s === "" || e === "") throw new Error("للحلقة أدخل الموسم والحلقة معاً، أو اتركهما فارغين لكل المسلسل.");
+  return keyOf("tv", id, +s, +e);
+}
+function syncKind() {
+  const tv = $("kind").value === "tv";
+  $("se").hidden = $("ep").hidden = !tv;
+}
+function resetForm() {
+  editing = null;
+  ["tid", "se", "ep", "lb", "qu", "url"].forEach((i) => ($(i).value = ""));
+  ["kind", "tid", "se", "ep"].forEach((i) => ($(i).disabled = false));
+  $("ft").textContent = "إضافة سيرفر"; $("save").textContent = "إضافة"; $("cancel").hidden = true;
+  syncKind();
+}
+function renderList() {
+  const keys = Object.keys(store.items).sort();
+  $("list").innerHTML = keys.length ? keys.map((k) => `<div class="grp">
+    <div class="gh"><b>${esc(label(k))}</b><a href="${esc(watchUrl(k))}" target="_blank" rel="noopener">فتح الصفحة</a></div>
+    ${store.list(k).map((s) => `<div class="src"><span class="tag">${esc(s.type)}</span>
+      <span>${esc(s.label || "بدون اسم")}${s.quality ? " • " + esc(s.quality) : ""}</span>
+      <code>${esc(s.url)}</code>
+      <div class="act"><button data-ed="${esc(k)}|${esc(s.id)}">تعديل</button><button data-del="${esc(k)}|${esc(s.id)}">حذف</button></div></div>`).join("")}
+  </div>`).join("") : '<div class="msg">لا توجد سيرفرات بعد.</div>';
+}
+const renderExport = () => { $("ex").value = store.exportJSON(); };
+const refresh = () => { renderList(); renderExport(); };
+
+$("kind").onchange = syncKind;
+$("sb").onclick = async () => {
+  const q = $("sq").value.trim();
+  if (!q) return;
+  $("res").textContent = "جارٍ البحث…";
+  try {
+    const r = ((await tmdb(`/search/${$("kind").value}`, { query: q })).results || []).slice(0, 8);
+    $("res").innerHTML = r.length ? r.map((x) =>
+      `<button type="button" data-id="${x.id}">${esc(x.title || x.name)} (${esc((x.release_date || x.first_air_date || "").slice(0, 4))}) • ${x.id}</button>`).join("") : "لا نتائج.";
+  } catch { $("res").textContent = "تعذّر الاتصال بـ TMDB."; }
+};
+$("res").onclick = (e) => { const id = e.target.dataset?.id; if (id) $("tid").value = id; };
+
+$("save").onclick = () => {
+  try {
+    const data = { type: $("st").value, url: $("url").value.trim(), label: $("lb").value.trim(), quality: $("qu").value.trim() };
+    if (editing) { store.update(editing.key, editing.id, data); resetForm(); say("fm", "تم حفظ التعديل."); }
+    else { store.add(currentKey(), data); ["lb", "qu", "url"].forEach((i) => ($(i).value = "")); say("fm", "تمت الإضافة. أضف سيرفراً آخر لنفس العمل أو غيّر الرقم."); }
+    refresh();
+  } catch (e) { say("fm", e.message, true); }
+};
+$("cancel").onclick = () => { resetForm(); say("fm", ""); };
+
+$("list").onclick = (e) => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  if (b.dataset.del) {
+    const [k, id] = b.dataset.del.split("|");
+    if (confirm("حذف هذا السيرفر؟")) { store.remove(k, id); if (editing?.id === id) resetForm(); refresh(); }
+  } else if (b.dataset.ed) {
+    const [k, id] = b.dataset.ed.split("|");
+    const s = store.list(k).find((x) => x.id === id);
+    if (!s) return;
+    const [t, tid, se, ep] = k.split(":");
+    editing = { key: k, id };
+    $("kind").value = t; syncKind();
+    $("tid").value = tid; $("se").value = se ?? ""; $("ep").value = ep ?? "";
+    ["kind", "tid", "se", "ep"].forEach((i) => ($(i).disabled = true));
+    $("st").value = s.type; $("lb").value = s.label || ""; $("qu").value = s.quality || ""; $("url").value = s.url;
+    $("ft").textContent = "تعديل سيرفر"; $("save").textContent = "حفظ التعديل"; $("cancel").hidden = false;
+    say("fm", label(k)); scrollTo({ top: 0, behavior: "smooth" });
+  }
+};
+
+$("rb").onclick = () => {
+  const o = $("ob").value.trim(), n = $("nb").value.trim();
+  if (!/^https:\/\//i.test(o) || !/^https:\/\//i.test(n)) return say("rm", "الرابطان يجب أن يبدآ بـ https://", true);
+  const c = store.replaceBase(o, n);
+  say("rm", c ? `تم تبديل ${c} رابط.` : "لم يُعثر على روابط تبدأ بالنص القديم.", !c);
+  refresh();
+};
+
+$("cp").onclick = async () => {
+  try { await navigator.clipboard.writeText($("ex").value); say("xm", "تم النسخ."); }
+  catch { $("ex").select(); say("xm", "حدّد النص وانسخه يدوياً.", true); }
+};
+$("dl").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([$("ex").value], { type: "application/json" }));
+  a.download = "sources.json"; a.click(); URL.revokeObjectURL(a.href);
+};
+$("ib").onclick = () => {
+  try {
+    const j = JSON.parse($("im").value);
+    if (!j || typeof j.items !== "object") throw new Error("الصيغة غير صحيحة: يجب أن يحتوي على items.");
+    store.importJSON($("im").value); $("im").value = ""; refresh(); say("xm", "تم الاستيراد.");
+  } catch (e) { say("xm", "فشل الاستيراد: " + e.message, true); }
+};
+$("rs").onclick = () => {
+  if (confirm("مسح التعديلات المحلية والعودة إلى data/sources.json المنشور؟")) { store.reset(); location.reload(); }
+};
+
+syncKind(); refresh();
+</script>
+</body>
+</html>
