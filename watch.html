@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CINEMIND_X | المشاهدة</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#090909;color:#f5f5f5;font-family:Arial,sans-serif}
+header{padding:18px;background:#111;border-bottom:1px solid #c9a34e;text-align:center}
+.logo{font-size:25px;font-weight:bold;color:#d4af55;letter-spacing:2px}
+a{color:#d4af55;text-decoration:none}
+main{max-width:1000px;margin:25px auto;padding:16px}
+h1{color:#d4af55;font-size:23px}
+.player{background:#000;border:1px solid #333;border-radius:10px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+video,iframe{width:100%;height:100%;border:0}
+.message{color:#bbb;text-align:center;line-height:1.9;padding:20px}
+button{background:#d4af55;color:#111;border:0;padding:12px 18px;border-radius:6px;font-weight:bold;cursor:pointer}
+footer{text-align:center;padding:25px;color:#888}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">CINEMIND_X</div>
+  <p>السينما بعين مختلفة</p>
+</header>
+<main>
+  <a href="./index.html">← العودة إلى المكتبة</a>
+  <h1 id="title">صفحة المشاهدة</h1>
+  <div class="player" id="player">
+    <div class="message">جاري تحميل بيانات العمل...</div>
+  </div>
+  <p id="info" class="message"></p>
+</main>
+<footer>© CINEMIND_X — بالأسود والذهبي… نروي القصة بشكل آخر.</footer>
+
+<script type="module">
+import {getMovie,getShow,getSeason,findId,poster} from "./js/tmdb.js";
+import {SourceStore} from "./js/sources.js";
+import {createPlayer} from "./js/player.js";
+import {CONFIG} from "./js/config.js";
+
+const params=new URLSearchParams(location.search);
+const type=params.get("type")==="tv"?"tv":"movie";
+const id=params.get("id");
+const query=params.get("q");
+const year=params.get("y");
+const box=document.getElementById("player");
+const title=document.getElementById("title");
+const info=document.getElementById("info");
+
+function message(text){
+  box.innerHTML="";
+  const p=document.createElement("div");
+  p.className="message";
+  p.textContent=text;
+  box.appendChild(p);
+}
+
+async function start(){
+  try{
+    let mediaId=id;
+    if(!mediaId&&query) mediaId=await findId(type,query,year);
+    if(!mediaId){
+      title.textContent="لم يتم العثور على العمل";
+      message("ارجع للمكتبة واختر الفيلم أو المسلسل من جديد.");
+      return;
+    }
+
+    const data=type==="tv"
+      ?await getShow(mediaId)
+      :await getMovie(mediaId);
+
+    title.textContent=data.title||data.name||"المشاهدة";
+    info.textContent=data.overview||"";
+
+    const store=await new SourceStore().load(CONFIG.sourcesUrl);
+    const sources=store.resolve(type,mediaId);
+
+    if(!sources.length){
+      message("لا يوجد مصدر مشاهدة مضاف لهذا العمل حالياً.");
+      return;
+    }
+
+    box.innerHTML="";
+    const controls=document.createElement("div");
+    controls.style.cssText="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0";
+    box.parentNode.insertBefore(controls,box);
+
+    sources.forEach((src,index)=>{
+      const button=document.createElement("button");
+      button.textContent=src.label||("المصدر "+(index+1));
+      button.onclick=()=>{
+        createPlayer(box,src,(kind,reason)=>{
+          message("تعذر تشغيل الفيديو: "+reason);
+        });
+      };
+      controls.appendChild(button);
+    });
+
+    createPlayer(box,sources[0],(kind,reason)=>{
+      message("تعذر تشغيل الفيديو: "+reason);
+    });
+  }catch(error){
+    console.error(error);
+    title.textContent="تعذر تحميل العمل";
+    message("تحقق من ملفات js ومفتاح TMDB واتصال الإنترنت.");
+  }
+}
+start();
+</script>
+</body>
+</html>
