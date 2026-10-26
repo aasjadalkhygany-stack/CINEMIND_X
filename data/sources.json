@@ -1,0 +1,9 @@
+{
+  "items": {
+    "movie:رقم_TMDB": [
+      { "id": "s1", "type": "mp4", "url": "https://رابطك/film.mp4", "label": "سيرفر 1", "quality": "1080p" },
+      { "id": "s2", "type": "hls", "url": "https://رابطك/film.m3u8", "label": "سيرفر 2" },
+      { "id": "s3", "type": "embed", "url": "https://archive.org/embed/CarnivalofSouls", "label": "سيرفر 3" }
+    ]
+  }
+}
