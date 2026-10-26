@@ -1,396 +1,151 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080808">
-  <title>مشاهدة | CINEMIND_X</title>
-  <style>
-    :root {
-      --gold: #d4af37;
-      --bg: #080808;
-      --panel: #151515;
-      --text: #f5f5f5;
-      --muted: #aaa;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, sans-serif;
-    }
-
-    header {
-      padding: 18px;
-      border-bottom: 1px solid #302713;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      color: var(--gold);
-      font-size: 22px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    a { color: var(--gold); text-decoration: none; }
-
-    main {
-      width: min(100% - 28px, 1000px);
-      margin: 24px auto;
-    }
-
-    .info {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 20px;
-    }
-
-    .poster {
-      width: 105px;
-      min-width: 105px;
-      border-radius: 8px;
-      background: #222;
-    }
-
-    h1 {
-      font-size: clamp(20px, 4vw, 30px);
-      margin: 0 0 8px;
-    }
-
-    .muted { color: var(--muted); line-height: 1.7; }
-
-    .player {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #000;
-      border: 1px solid #3b3016;
-      border-radius: 10px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .player video, .player iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #000;
-    }
-
-    .message {
-      padding: 20px;
-      text-align: center;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-
-    .sources, .episodes {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 16px 0;
-    }
-
-    button, .btn {
-      border: 1px solid var(--gold);
-      background: #17130a;
-      color: var(--gold);
-      border-radius: 6px;
-      padding: 11px 15px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    button.active {
-      background: var(--gold);
-      color: #080808;
-    }
-
-    select {
-      padding: 10px;
-      color: white;
-      background: var(--panel);
-      border: 1px solid #665321;
-      border-radius: 6px;
-    }
-
-    .section {
-      margin-top: 24px;
-      padding: 18px;
-      background: var(--panel);
-      border: 1px solid #29241a;
-      border-radius: 10px;
-    }
-
-    .section h2 {
-      margin-top: 0;
-      font-size: 18px;
-      color: var(--gold);
-    }
-
-    @media (max-width: 550px) {
-      .info { align-items: flex-start; }
-      .poster { width: 82px; min-width: 82px; }
-      header { padding: 14px; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CINEMIND_x</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+:root{color-scheme:dark;--bg:#0b0907;--ink:#f2e8d5;--card:#16110d;--line:#3a2d1c;--accent:#d4a64a;--mute:#a8987c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:'Cairo',Tahoma,Arial,sans-serif;padding:14px;min-height:100%}
+.w{max-width:960px;margin:0 auto}
+.hd{display:flex;align-items:center;gap:12px;margin:4px 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.br{font-family:'Cinzel',serif;font-weight:800;font-size:1.4rem;letter-spacing:.12em;background:linear-gradient(90deg,#f3d58a,#b78a35);-webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none}
+a{color:var(--accent)}
+select,button{font:inherit;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px;cursor:pointer}
+button.on{background:var(--accent);border-color:var(--accent);color:#1a1206;font-weight:800}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pl{aspect-ratio:16/9;background:#050403;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;place-items:center}
+.pl video,.pl iframe{width:100%;height:100%;border:0;background:#000}
+.msg{padding:18px;color:var(--mute);text-align:center;line-height:1.9}
+.msg.err{color:var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.info{display:flex;gap:16px;margin:16px 0;flex-wrap:wrap}
+.info img{width:140px;border-radius:12px;border:1px solid var(--line);align-self:flex-start}
+.info h1{margin:0 0 6px;font-size:1.5rem;color:var(--accent)}
+.meta{color:var(--mute);font-size:.9rem}
+.info>div{flex:1;min-width:220px;line-height:1.8}
+.eps{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.eps button{text-align:start}
+.note{color:var(--accent);font-size:.88rem;margin:6px 0;min-height:1.2em}
+.box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:14px 0;background:#100c09}
+.box h2{margin:0 0 8px;font-size:1rem;color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:.82rem}
+.tiny{color:var(--mute);font-size:.75rem;line-height:1.7}
+</style>
 </head>
 <body>
-  <header>
-    <div class="brand">CINEMIND_X</div>
-    <a href="./index.html">← الرجوع إلى المكتبة</a>
-  </header>
+<div class="w">
+  <header class="hd"><a class="br" href="./">CINEMIND</a><span class="meta" id="crumb"></span></header>
+  <div class="pl" id="player"><div class="msg" id="ld">…</div></div>
+  <div class="row" id="srcs"></div>
+  <div class="note" id="note"></div>
+  <div class="info" id="info"></div>
+  <section class="box" id="prov" hidden></section>
+  <div id="tv" hidden>
+    <div class="row"><select id="season"></select></div>
+    <div class="eps" id="eps"></div>
+  </div>
+</div>
+<script type="module">
+import { getMovie, getShow, getSeason, findId, poster } from "./js/tmdb.js";
+import { SourceStore } from "./js/sources.js";
+import { createPlayer } from "./js/player.js";
+import { CONFIG } from "./js/config.js";
 
-  <main>
-    <section class="info">
-      <img id="poster" class="poster" alt="ملصق العمل" hidden>
-      <div>
-        <h1 id="title">جاري تحميل العمل...</h1>
-        <div id="details" class="muted"></div>
-      </div>
-    </section>
+const S = {
+  ar: { back: "رجوع للمكتبة", nosrc: "لا يوجد مصدر مشاهدة لهذا العمل بعد.", trailer: "هذا التريلر الرسمي بدل الفيلم", src: "مصدر", open: "فتح عند المزوّد", err: "تعذّر جلب البيانات من TMDB.", nf: "لم نجد هذا العمل.", next: "تعذّر هذا السيرفر، جارٍ تجربة السيرفر التالي…", allfail: "تعذّرت كل السيرفرات المتاحة.", direct: "مباشر", embed: "تضمين", ptitle: "أماكن المشاهدة الرسمية", pnote: "روابط خارجية لخدمات رسمية، وليست تشغيلاً مباشراً داخل الموقع.", pnone: "لا توجد خدمة مشاهدة رسمية مسجّلة لهذا البلد.", flatrate: "اشتراك", rent: "إيجار", buy: "شراء", plink: "عرض خيارات المشاهدة الرسمية ↗", attrib: "بيانات أماكن المشاهدة من JustWatch عبر TMDB.", country: "البلد" },
+  en: { back: "Back to library", nosrc: "No watch source for this title yet.", trailer: "Showing the official trailer instead", src: "Source", open: "Open at provider", err: "Could not load data from TMDB.", nf: "Title not found.", next: "This server failed, trying the next one…", allfail: "All available servers failed.", direct: "Direct", embed: "Embed", ptitle: "Official places to watch", pnote: "External links to official services, not playback inside this site.", pnone: "No official service listed for this country.", flatrate: "Subscription", rent: "Rent", buy: "Buy", plink: "See official viewing options ↗", attrib: "Watch-provider data by JustWatch via TMDB.", country: "Country" },
+};
+const T = S[CONFIG.ui] || S.en;
+const D = document.documentElement;
+D.lang = CONFIG.ui; D.dir = CONFIG.ui === "ar" || CONFIG.ui === "fa" ? "rtl" : "ltr";
 
-    <section id="player" class="player">
-      <div class="message">جاري تجهيز مشغّل الفيديو...</div>
-    </section>
+const $ = (s) => document.querySelector(s);
+const esc = (t = "") => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const q = new URLSearchParams(location.search);
+const type = q.get("type") === "tv" ? "tv" : "movie";
+let id = +q.get("id") || 0;
+let season = +q.get("s") || 1, ep = +q.get("e") || 1, cur = null, trailerKey = "";
+const store = await new SourceStore().load(CONFIG.sourcesUrl);
+const sources = () => store.resolve(type, id, type === "tv" ? season : null, ep);
 
-    <section class="section">
-      <h2>مصادر المشاهدة</h2>
-      <div id="sources" class="sources"></div>
-      <div id="status" class="message">جاري البحث عن المصادر...</div>
-    </section>
-
-    <section id="tvControls" class="section" hidden>
-      <h2>المواسم والحلقات</h2>
-      <div>
-        <label for="season">الموسم: </label>
-        <select id="season"></select>
-      </div>
-      <div id="episodes" class="episodes"></div>
-    </section>
-
-    <section class="section">
-      <h2>عن العمل</h2>
-      <p id="overview" class="muted">سيظهر وصف الفيلم أو المسلسل هنا.</p>
-    </section>
-  </main>
-
-  <script type="module">
-    import {
-      getMovie, getShow, getSeason, findId, poster
-    } from "./js/tmdb.js";
-
-    import { SourceStore } from "./js/sources.js";
-    import { createPlayer } from "./js/player.js";
-    import { CONFIG } from "./js/config.js";
-
-    const $ = (id) => document.getElementById(id);
-    const params = new URLSearchParams(location.search);
-
-    let type = params.get("type") === "tv" ? "tv" : "movie";
-    let id = params.get("id");
-    let seasonNumber = Number(params.get("season") || 1);
-    let episodeNumber = Number(params.get("episode") || 1);
-    let currentPlayer = null;
-    let currentSources = [];
-
-    const store = new SourceStore();
-
-    function setStatus(text) {
-      $("status").textContent = text;
-    }
-
-    function showPlayerMessage(text) {
-      if (currentPlayer) currentPlayer.destroy();
-      currentPlayer = null;
-      $("player").innerHTML = "";
-      const msg = document.createElement("div");
-      msg.className = "message";
-      msg.textContent = text;
-      $("player").appendChild(msg);
-    }
-
-    function showError(reason, description) {
-      setStatus(description || "تعذر تشغيل المصدر.");
-    }
-
-    function playSource(source, button) {
-      if (currentPlayer) currentPlayer.destroy();
-
-      $("player").innerHTML = "";
-      currentPlayer = createPlayer($("player"), source, showError);
-
-      document.querySelectorAll("#sources button").forEach((b) => {
-        b.classList.toggle("active", b === button);
-      });
-
-      setStatus("تم اختيار المصدر: " + (source.label || source.type));
-    }
-
-    function renderSources(sources) {
-      currentSources = sources;
-      $("sources").innerHTML = "";
-
-      if (!sources.length) {
-        showPlayerMessage("لا توجد مصادر فيديو مضافة لهذا العمل حتى الآن.");
-        setStatus(
-          "معلومات العمل تأتي من TMDB، أما الفيديو فيحتاج رابط مشاهدة قانونيًا وصالحًا."
-        );
-        return;
-      }
-
-      sources.forEach((source, index) => {
-        const button = document.createElement("button");
-        button.textContent =
-          source.label || `المصدر ${index + 1}`;
-
-        button.addEventListener("click", () => {
-          playSource(source, button);
-        });
-
-        $("sources").appendChild(button);
-      });
-
-      setStatus("اختر أحد مصادر المشاهدة أعلاه.");
-      playSource(sources[0], $("sources").firstElementChild);
-    }
-
-    async function loadSources() {
-      const sources = store.resolve(
-        type,
-        id,
-        type === "tv" ? seasonNumber : null,
-        type === "tv" ? episodeNumber : null
-      );
-
-      renderSources(sources);
-    }
-
-    async function loadEpisodeSources() {
-      const url = new URL(location.href);
-      url.searchParams.set("season", seasonNumber);
-      url.searchParams.set("episode", episodeNumber);
-      history.replaceState({}, "", url);
-
-      await loadSources();
-    }
-
-    async function loadSeason() {
-      $("tvControls").hidden = false;
-
-      const show = await getShow(id);
-      const seasons = (show.seasons || []).filter(
-        (season) => season.season_number > 0
-      );
-
-      $("season").innerHTML = "";
-
-      seasons.forEach((season) => {
-        const option = document.createElement("option");
-        option.value = season.season_number;
-        option.textContent = season.name;
-        option.selected = season.season_number === seasonNumber;
-        $("season").appendChild(option);
-      });
-
-      if (!seasons.some((s) => s.season_number === seasonNumber)) {
-        seasonNumber = seasons[0]?.season_number || 1;
-      }
-
-      $("season").value = String(seasonNumber);
-      await loadEpisodes();
-    }
-
-    async function loadEpisodes() {
-      $("episodes").innerHTML = "";
-      const data = await getSeason(id, seasonNumber);
-
-      (data.episodes || []).forEach((episode) => {
-        const button = document.createElement("button");
-        button.textContent = `الحلقة ${episode.episode_number}`;
-
-        if (episode.episode_number === episodeNumber) {
-          button.classList.add("active");
-        }
-
-        button.addEventListener("click", async () => {
-          episodeNumber = episode.episode_number;
-          await loadEpisodes();
-          await loadEpisodeSources();
-        });
-
-        $("episodes").appendChild(button);
-      });
-    }
-
-    $("season").addEventListener("change", async (event) => {
-      seasonNumber = Number(event.target.value);
-      episodeNumber = 1;
-      await loadEpisodes();
-      await loadEpisodeSources();
-    });
-
-    async function init() {
-      try {
-        if (!id) {
-          const query = params.get("q");
-          const year = params.get("y");
-          if (!query) throw new Error("لم يتم تحديد فيلم أو مسلسل.");
-
-          id = await findId(type, query, year);
-          if (!id) throw new Error("لم نعثر على العمل في TMDB.");
-
-          const url = new URL(location.href);
-          url.searchParams.set("id", id);
-          history.replaceState({}, "", url);
-        }
-
-        const data = await store.load(CONFIG.sourcesUrl);
-        const work = type === "tv"
-          ? await getShow(id)
-          : await getMovie(id);
-
-        $("title").textContent = work.title || work.name || "بدون عنوان";
-        $("details").textContent = [
-          work.release_date || work.first_air_date || "",
-          work.vote_average ? `التقييم ${work.vote_average.toFixed(1)}/10` : ""
-        ].filter(Boolean).join(" • ");
-
-        $("overview").textContent =
-          work.overview || "لا يتوفر وصف لهذا العمل.";
-
-        if (work.poster_path) {
-          $("poster").src = poster(work.poster_path);
-          $("poster").hidden = false;
-        }
-
-        if (type === "tv") {
-          await loadSeason();
-        } else {
-          $("tvControls").hidden = true;
-        }
-
-        await loadSources();
-      } catch (error) {
-        console.error(error);
-        $("title").textContent = "تعذر تحميل العمل";
-        showPlayerMessage("حدث خطأ أثناء تحميل بيانات العمل.");
-        setStatus(error.message || "تحقق من اتصال TMDB وإعدادات الموقع.");
-      }
-    }
-
-    init();
-  </script>
+function play(srcs, i = 0, auto = false) {
+  cur?.destroy();
+  const box = $("#player");
+  if (!auto) $("#note").textContent = "";
+  if (!srcs.length) {
+    $("#srcs").innerHTML = "";
+    box.innerHTML = trailerKey
+      ? `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailerKey)}" allow="fullscreen" allowfullscreen></iframe>`
+      : `<div class="msg">${esc(T.nosrc)}</div>`;
+    return;
+  }
+  $("#srcs").innerHTML = srcs.map((s, n) => `<button data-n="${n}" class="${n === i ? "on" : ""}">${esc(s.label || T.src + " " + (n + 1))}${s.quality ? " • " + esc(s.quality) : ""} • ${esc(s.type === "embed" ? T.embed : T.direct)}</button>`).join("");
+  $("#srcs").onclick = (e) => { const n = e.target.closest("button")?.dataset.n; if (n != null) play(srcs, +n); };
+  cur = createPlayer(box, srcs[i], (k, why, s) => {
+    if (i + 1 < srcs.length) { $("#note").textContent = T.next; play(srcs, i + 1, true); return; }
+    $("#note").textContent = srcs.length > 1 ? T.allfail : "";
+    box.innerHTML = `<div class="msg err">${esc(why)}<br><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(T.open)}</a></div>`;
+  }, () => { if (auto) $("#note").textContent = ""; });
+}
+const COUNTRIES = ["IQ", "SA", "AE", "EG", "KW", "JO", "LB", "MA", "DZ", "TR", "FR", "GB", "US", "CA", "DE", "ES"];
+function providers(d) {
+  const all = d["watch/providers"]?.results || {};
+  let reg = "";
+  try { reg = localStorage.getItem("cm-reg") || ""; } catch {}
+  if (!COUNTRIES.includes(reg)) { const r = (navigator.language.split("-")[1] || "").toUpperCase(); reg = COUNTRIES.includes(r) ? r : "US"; }
+  const names = new Intl.DisplayNames([CONFIG.ui], { type: "region" });
+  const box = $("#prov");
+  const draw = () => {
+    const p = all[reg];
+    const groups = ["flatrate", "rent", "buy"].filter((g) => p?.[g]?.length).map((g) =>
+      `<div class="tiny">${esc(T[g])}</div><div class="chips">${[...new Set(p[g].map((x) => x.provider_name))].map((n) => `<span class="chip">${esc(n)}</span>`).join("")}</div>`).join("");
+    $("#pbody").innerHTML = groups
+      ? groups + (p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(T.plink)}</a>` : "")
+      : `<div class="msg">${esc(T.pnone)}</div>`;
+  };
+  box.innerHTML = `<h2>${esc(T.ptitle)}</h2><div class="tiny">${esc(T.pnote)}</div>
+    <div class="row"><select id="reg" aria-label="${esc(T.country)}">${COUNTRIES.map((c) => `<option value="${c}" ${c === reg ? "selected" : ""}>${esc(names.of(c) || c)}</option>`).join("")}</select></div>
+    <div id="pbody"></div><div class="tiny">${esc(T.attrib)}</div>`;
+  box.hidden = false;
+  $("#reg").onchange = (e) => { reg = e.target.value; try { localStorage.setItem("cm-reg", reg); } catch {} draw(); };
+  draw();
+}
+async function loadSeason() {
+  const d = await getSeason(id, season);
+  $("#eps").innerHTML = d.episodes.map((x) =>
+    `<button data-e="${x.episode_number}" class="${x.episode_number === ep ? "on" : ""}">${x.episode_number}. ${esc(x.name)}</button>`).join("");
+}
+try {
+  if (!id && q.get("q")) id = await findId(type, q.get("q"), q.get("y"));
+  if (!id) throw new Error("nf");
+  const d = type === "tv" ? await getShow(id) : await getMovie(id);
+  const title = d.title || d.name;
+  document.title = title + " — CINEMIND_x";
+  $("#crumb").innerHTML = `<a href="./">${esc(T.back)}</a>`;
+  const vs = (d.videos?.results || []).filter((v) => v.site === "YouTube");
+  trailerKey = (vs.find((v) => v.type === "Trailer") || vs.find((v) => v.type === "Teaser") || {}).key || "";
+  $("#info").innerHTML = `${d.poster_path ? `<img src="${poster(d.poster_path)}" alt="">` : ""}
+    <div><h1>${esc(title)}</h1>
+    <div class="meta">${d.vote_average ? "⭐ " + d.vote_average.toFixed(1) + " • " : ""}${(d.release_date || d.first_air_date || "").slice(0, 4)}${(d.genres || []).length ? " • " + esc(d.genres.map((g) => g.name).join("، ")) : ""}</div>
+    <p>${esc(d.overview)}</p></div>`;
+  providers(d);
+  if (type === "tv") {
+    $("#tv").hidden = false;
+    $("#season").innerHTML = d.seasons.filter((s) => s.season_number > 0)
+      .map((s) => `<option value="${s.season_number}" ${s.season_number === season ? "selected" : ""}>${esc(s.name)}</option>`).join("");
+    $("#season").onchange = async (e) => { season = +e.target.value; ep = 1; await loadSeason(); play(sources()); };
+    $("#eps").onclick = (e) => { const n = e.target.closest("button")?.dataset.e; if (!n) return; ep = +n; loadSeason(); play(sources()); };
+    await loadSeason();
+  }
+  play(sources());
+} catch (e) {
+  $("#player").innerHTML = `<div class="msg err">${esc(e.message === "nf" ? T.nf : T.err)}</div>`;
+}
+</script>
 </body>
 </html>
