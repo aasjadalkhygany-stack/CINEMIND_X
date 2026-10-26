@@ -2,113 +2,395 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CINEMIND_X | المشاهدة</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;background:#090909;color:#f5f5f5;font-family:Arial,sans-serif}
-header{padding:18px;background:#111;border-bottom:1px solid #c9a34e;text-align:center}
-.logo{font-size:25px;font-weight:bold;color:#d4af55;letter-spacing:2px}
-a{color:#d4af55;text-decoration:none}
-main{max-width:1000px;margin:25px auto;padding:16px}
-h1{color:#d4af55;font-size:23px}
-.player{background:#000;border:1px solid #333;border-radius:10px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
-video,iframe{width:100%;height:100%;border:0}
-.message{color:#bbb;text-align:center;line-height:1.9;padding:20px}
-button{background:#d4af55;color:#111;border:0;padding:12px 18px;border-radius:6px;font-weight:bold;cursor:pointer}
-footer{text-align:center;padding:25px;color:#888}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080808">
+  <title>مشاهدة | CINEMIND_X</title>
+  <style>
+    :root {
+      --gold: #d4af37;
+      --bg: #080808;
+      --panel: #151515;
+      --text: #f5f5f5;
+      --muted: #aaa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      padding: 18px;
+      border-bottom: 1px solid #302713;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      color: var(--gold);
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    a { color: var(--gold); text-decoration: none; }
+
+    main {
+      width: min(100% - 28px, 1000px);
+      margin: 24px auto;
+    }
+
+    .info {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .poster {
+      width: 105px;
+      min-width: 105px;
+      border-radius: 8px;
+      background: #222;
+    }
+
+    h1 {
+      font-size: clamp(20px, 4vw, 30px);
+      margin: 0 0 8px;
+    }
+
+    .muted { color: var(--muted); line-height: 1.7; }
+
+    .player {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border: 1px solid #3b3016;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .player video, .player iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+    }
+
+    .message {
+      padding: 20px;
+      text-align: center;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .sources, .episodes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    button, .btn {
+      border: 1px solid var(--gold);
+      background: #17130a;
+      color: var(--gold);
+      border-radius: 6px;
+      padding: 11px 15px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button.active {
+      background: var(--gold);
+      color: #080808;
+    }
+
+    select {
+      padding: 10px;
+      color: white;
+      background: var(--panel);
+      border: 1px solid #665321;
+      border-radius: 6px;
+    }
+
+    .section {
+      margin-top: 24px;
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid #29241a;
+      border-radius: 10px;
+    }
+
+    .section h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: var(--gold);
+    }
+
+    @media (max-width: 550px) {
+      .info { align-items: flex-start; }
+      .poster { width: 82px; min-width: 82px; }
+      header { padding: 14px; }
+    }
+  </style>
 </head>
 <body>
-<header>
-  <div class="logo">CINEMIND_X</div>
-  <p>السينما بعين مختلفة</p>
-</header>
-<main>
-  <a href="./index.html">← العودة إلى المكتبة</a>
-  <h1 id="title">صفحة المشاهدة</h1>
-  <div class="player" id="player">
-    <div class="message">جاري تحميل بيانات العمل...</div>
-  </div>
-  <p id="info" class="message"></p>
-</main>
-<footer>© CINEMIND_X — بالأسود والذهبي… نروي القصة بشكل آخر.</footer>
+  <header>
+    <div class="brand">CINEMIND_X</div>
+    <a href="./index.html">← الرجوع إلى المكتبة</a>
+  </header>
 
-<script type="module">
-import {getMovie,getShow,getSeason,findId,poster} from "./js/tmdb.js";
-import {SourceStore} from "./js/sources.js";
-import {createPlayer} from "./js/player.js";
-import {CONFIG} from "./js/config.js";
+  <main>
+    <section class="info">
+      <img id="poster" class="poster" alt="ملصق العمل" hidden>
+      <div>
+        <h1 id="title">جاري تحميل العمل...</h1>
+        <div id="details" class="muted"></div>
+      </div>
+    </section>
 
-const params=new URLSearchParams(location.search);
-const type=params.get("type")==="tv"?"tv":"movie";
-const id=params.get("id");
-const query=params.get("q");
-const year=params.get("y");
-const box=document.getElementById("player");
-const title=document.getElementById("title");
-const info=document.getElementById("info");
+    <section id="player" class="player">
+      <div class="message">جاري تجهيز مشغّل الفيديو...</div>
+    </section>
 
-function message(text){
-  box.innerHTML="";
-  const p=document.createElement("div");
-  p.className="message";
-  p.textContent=text;
-  box.appendChild(p);
-}
+    <section class="section">
+      <h2>مصادر المشاهدة</h2>
+      <div id="sources" class="sources"></div>
+      <div id="status" class="message">جاري البحث عن المصادر...</div>
+    </section>
 
-async function start(){
-  try{
-    let mediaId=id;
-    if(!mediaId&&query) mediaId=await findId(type,query,year);
-    if(!mediaId){
-      title.textContent="لم يتم العثور على العمل";
-      message("ارجع للمكتبة واختر الفيلم أو المسلسل من جديد.");
-      return;
+    <section id="tvControls" class="section" hidden>
+      <h2>المواسم والحلقات</h2>
+      <div>
+        <label for="season">الموسم: </label>
+        <select id="season"></select>
+      </div>
+      <div id="episodes" class="episodes"></div>
+    </section>
+
+    <section class="section">
+      <h2>عن العمل</h2>
+      <p id="overview" class="muted">سيظهر وصف الفيلم أو المسلسل هنا.</p>
+    </section>
+  </main>
+
+  <script type="module">
+    import {
+      getMovie, getShow, getSeason, findId, poster
+    } from "./js/tmdb.js";
+
+    import { SourceStore } from "./js/sources.js";
+    import { createPlayer } from "./js/player.js";
+    import { CONFIG } from "./js/config.js";
+
+    const $ = (id) => document.getElementById(id);
+    const params = new URLSearchParams(location.search);
+
+    let type = params.get("type") === "tv" ? "tv" : "movie";
+    let id = params.get("id");
+    let seasonNumber = Number(params.get("season") || 1);
+    let episodeNumber = Number(params.get("episode") || 1);
+    let currentPlayer = null;
+    let currentSources = [];
+
+    const store = new SourceStore();
+
+    function setStatus(text) {
+      $("status").textContent = text;
     }
 
-    const data=type==="tv"
-      ?await getShow(mediaId)
-      :await getMovie(mediaId);
-
-    title.textContent=data.title||data.name||"المشاهدة";
-    info.textContent=data.overview||"";
-
-    const store=await new SourceStore().load(CONFIG.sourcesUrl);
-    const sources=store.resolve(type,mediaId);
-
-    if(!sources.length){
-      message("لا يوجد مصدر مشاهدة مضاف لهذا العمل حالياً.");
-      return;
+    function showPlayerMessage(text) {
+      if (currentPlayer) currentPlayer.destroy();
+      currentPlayer = null;
+      $("player").innerHTML = "";
+      const msg = document.createElement("div");
+      msg.className = "message";
+      msg.textContent = text;
+      $("player").appendChild(msg);
     }
 
-    box.innerHTML="";
-    const controls=document.createElement("div");
-    controls.style.cssText="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0";
-    box.parentNode.insertBefore(controls,box);
+    function showError(reason, description) {
+      setStatus(description || "تعذر تشغيل المصدر.");
+    }
 
-    sources.forEach((src,index)=>{
-      const button=document.createElement("button");
-      button.textContent=src.label||("المصدر "+(index+1));
-      button.onclick=()=>{
-        createPlayer(box,src,(kind,reason)=>{
-          message("تعذر تشغيل الفيديو: "+reason);
+    function playSource(source, button) {
+      if (currentPlayer) currentPlayer.destroy();
+
+      $("player").innerHTML = "";
+      currentPlayer = createPlayer($("player"), source, showError);
+
+      document.querySelectorAll("#sources button").forEach((b) => {
+        b.classList.toggle("active", b === button);
+      });
+
+      setStatus("تم اختيار المصدر: " + (source.label || source.type));
+    }
+
+    function renderSources(sources) {
+      currentSources = sources;
+      $("sources").innerHTML = "";
+
+      if (!sources.length) {
+        showPlayerMessage("لا توجد مصادر فيديو مضافة لهذا العمل حتى الآن.");
+        setStatus(
+          "معلومات العمل تأتي من TMDB، أما الفيديو فيحتاج رابط مشاهدة قانونيًا وصالحًا."
+        );
+        return;
+      }
+
+      sources.forEach((source, index) => {
+        const button = document.createElement("button");
+        button.textContent =
+          source.label || `المصدر ${index + 1}`;
+
+        button.addEventListener("click", () => {
+          playSource(source, button);
         });
-      };
-      controls.appendChild(button);
+
+        $("sources").appendChild(button);
+      });
+
+      setStatus("اختر أحد مصادر المشاهدة أعلاه.");
+      playSource(sources[0], $("sources").firstElementChild);
+    }
+
+    async function loadSources() {
+      const sources = store.resolve(
+        type,
+        id,
+        type === "tv" ? seasonNumber : null,
+        type === "tv" ? episodeNumber : null
+      );
+
+      renderSources(sources);
+    }
+
+    async function loadEpisodeSources() {
+      const url = new URL(location.href);
+      url.searchParams.set("season", seasonNumber);
+      url.searchParams.set("episode", episodeNumber);
+      history.replaceState({}, "", url);
+
+      await loadSources();
+    }
+
+    async function loadSeason() {
+      $("tvControls").hidden = false;
+
+      const show = await getShow(id);
+      const seasons = (show.seasons || []).filter(
+        (season) => season.season_number > 0
+      );
+
+      $("season").innerHTML = "";
+
+      seasons.forEach((season) => {
+        const option = document.createElement("option");
+        option.value = season.season_number;
+        option.textContent = season.name;
+        option.selected = season.season_number === seasonNumber;
+        $("season").appendChild(option);
+      });
+
+      if (!seasons.some((s) => s.season_number === seasonNumber)) {
+        seasonNumber = seasons[0]?.season_number || 1;
+      }
+
+      $("season").value = String(seasonNumber);
+      await loadEpisodes();
+    }
+
+    async function loadEpisodes() {
+      $("episodes").innerHTML = "";
+      const data = await getSeason(id, seasonNumber);
+
+      (data.episodes || []).forEach((episode) => {
+        const button = document.createElement("button");
+        button.textContent = `الحلقة ${episode.episode_number}`;
+
+        if (episode.episode_number === episodeNumber) {
+          button.classList.add("active");
+        }
+
+        button.addEventListener("click", async () => {
+          episodeNumber = episode.episode_number;
+          await loadEpisodes();
+          await loadEpisodeSources();
+        });
+
+        $("episodes").appendChild(button);
+      });
+    }
+
+    $("season").addEventListener("change", async (event) => {
+      seasonNumber = Number(event.target.value);
+      episodeNumber = 1;
+      await loadEpisodes();
+      await loadEpisodeSources();
     });
 
-    createPlayer(box,sources[0],(kind,reason)=>{
-      message("تعذر تشغيل الفيديو: "+reason);
-    });
-  }catch(error){
-    console.error(error);
-    title.textContent="تعذر تحميل العمل";
-    message("تحقق من ملفات js ومفتاح TMDB واتصال الإنترنت.");
-  }
-}
-start();
-</script>
+    async function init() {
+      try {
+        if (!id) {
+          const query = params.get("q");
+          const year = params.get("y");
+          if (!query) throw new Error("لم يتم تحديد فيلم أو مسلسل.");
+
+          id = await findId(type, query, year);
+          if (!id) throw new Error("لم نعثر على العمل في TMDB.");
+
+          const url = new URL(location.href);
+          url.searchParams.set("id", id);
+          history.replaceState({}, "", url);
+        }
+
+        const data = await store.load(CONFIG.sourcesUrl);
+        const work = type === "tv"
+          ? await getShow(id)
+          : await getMovie(id);
+
+        $("title").textContent = work.title || work.name || "بدون عنوان";
+        $("details").textContent = [
+          work.release_date || work.first_air_date || "",
+          work.vote_average ? `التقييم ${work.vote_average.toFixed(1)}/10` : ""
+        ].filter(Boolean).join(" • ");
+
+        $("overview").textContent =
+          work.overview || "لا يتوفر وصف لهذا العمل.";
+
+        if (work.poster_path) {
+          $("poster").src = poster(work.poster_path);
+          $("poster").hidden = false;
+        }
+
+        if (type === "tv") {
+          await loadSeason();
+        } else {
+          $("tvControls").hidden = true;
+        }
+
+        await loadSources();
+      } catch (error) {
+        console.error(error);
+        $("title").textContent = "تعذر تحميل العمل";
+        showPlayerMessage("حدث خطأ أثناء تحميل بيانات العمل.");
+        setStatus(error.message || "تحقق من اتصال TMDB وإعدادات الموقع.");
+      }
+    }
+
+    init();
+  </script>
 </body>
 </html>
