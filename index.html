@@ -1,14 +1,15 @@
-<form id="vikiSearch">
-  <input id="q" placeholder="ابحث في Viki..." required>
-  <button>بحث</button>
-</form>
+<style>
+  .viki-card{max-width:360px;margin:20px auto;padding:18px;border-radius:14px;background:#1a1a1a;color:#fff;text-align:center;font-family:sans-serif;direction:rtl}
+  .viki-card h3{margin:0 0 8px;color:#e6b84a}
+  .viki-card p{font-size:14px;line-height:1.7;color:#ccc;margin:0 0 14px}
+  .viki-card a{display:inline-block;padding:10px 20px;background:#00c4b4;color:#000;border-radius:8px;text-decoration:none;font-weight:bold}
+  .viki-card a:hover{background:#00e0cd}
+  .viki-card small{display:block;margin-top:10px;color:#888;font-size:12px}
+</style>
 
-<a href="https://www.viki.com" target="_blank" rel="noopener">شاهد على Viki</a>
-
-<script>
-document.getElementById('vikiSearch').onsubmit = e => {
-  e.preventDefault();
-  const q = encodeURIComponent(document.getElementById('q').value);
-  window.open('https://www.viki.com/search?q=' + q, '_blank');
-};
-</script>
+<div class="viki-card">
+  <h3>The K2 (2016)</h3>
+  <p>حارس شخصي سابق يتخلى عن وطنه وزملائه، ويدخل عالماً من السياسة والمؤامرات.</p>
+  <a href="https://www.viki.com/search?q=The%20K2" target="_blank" rel="noopener">▶ شاهد على Viki</a>
+  <small>رابط خارجي، يفتح في Viki</small>
+</div>
