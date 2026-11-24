@@ -21,8 +21,8 @@ button.on{background:var(--accent);border-color:var(--accent);color:#1a1206;font
 .pl video,.pl iframe{width:100%;height:100%;border:0;background:#000}
 /* قص واجهة LookMovie لإظهار مساحة الفيديو فقط؛ قيمة الإزاحة قابلة للضبط بعد التجربة */
 .pl.lookmovie-crop{display:block}
-.pl.lookmovie-crop iframe{position:absolute;inset-inline:0;top:var(--lm-crop-top, -420px);width:100%;height:1200px;max-width:none;border:0}
-@media(min-width:700px){.pl.lookmovie-crop iframe{top:var(--lm-crop-top,-470px);height:1500px}}
+.pl.lookmovie-crop iframe{position:absolute;inset-inline:0;top:var(--lm-crop-top, -370px);width:100%;height:1200px;max-width:none;border:0}
+@media(min-width:700px){.pl.lookmovie-crop iframe{top:var(--lm-crop-top,-370px);height:1200px}}
 .msg{padding:18px;color:var(--mute);text-align:center;line-height:1.9}
 .msg.err{color:var(--accent)}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
@@ -85,7 +85,7 @@ function play(srcs, i = 0, auto = false) {
   cur?.destroy();
   const box = $("#player");
   if (!auto) $("#note").textContent = "";
-  if (!srcs.length) {
+  if (!srcs.length || (type === "movie" && id === LOOKMOVIE_TEST_ID)) {
     $("#srcs").innerHTML = "";
     if (type === "movie" && id === LOOKMOVIE_TEST_ID) {
       // إظهار مساحة الفيديو فقط من صفحة المصدر عبر قصّ الإطار؛ قد يحتاج مقدار القص ضبطاً حسب تغيّر إعلانات المصدر.
