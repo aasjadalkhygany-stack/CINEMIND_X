@@ -17,8 +17,12 @@ a{color:var(--accent)}
 select,button{font:inherit;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px;cursor:pointer}
 button.on{background:var(--accent);border-color:var(--accent);color:#1a1206;font-weight:800}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.pl{aspect-ratio:16/9;background:#050403;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;place-items:center}
+.pl{aspect-ratio:16/9;background:#050403;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;place-items:center;position:relative}
 .pl video,.pl iframe{width:100%;height:100%;border:0;background:#000}
+/* قص واجهة LookMovie لإظهار مساحة الفيديو فقط؛ قيمة الإزاحة قابلة للضبط بعد التجربة */
+.pl.lookmovie-crop{display:block}
+.pl.lookmovie-crop iframe{position:absolute;inset-inline:0;top:var(--lm-crop-top, -420px);width:100%;height:1200px;max-width:none;border:0}
+@media(min-width:700px){.pl.lookmovie-crop iframe{top:var(--lm-crop-top,-470px);height:1500px}}
 .msg{padding:18px;color:var(--mute);text-align:center;line-height:1.9}
 .msg.err{color:var(--accent)}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
@@ -57,8 +61,8 @@ import { createPlayer } from "./js/player.js";
 import { CONFIG } from "./js/config.js";
 
 const S = {
-  ar: { back: "رجوع للمكتبة", nosrc: "لا يوجد مصدر مشاهدة لهذا العمل بعد.", trailer: "هذا التريلر الرسمي بدل الفيلم", src: "مصدر", open: "فتح عند المزوّد", err: "تعذّر جلب البيانات من TMDB.", nf: "لم نجد هذا العمل.", next: "تعذّر هذا السيرفر، جارٍ تجربة السيرفر التالي…", allfail: "تعذّرت كل السيرفرات المتاحة.", direct: "مباشر", embed: "تضمين", ptitle: "أماكن المشاهدة الرسمية", pnote: "روابط خارجية لخدمات رسمية، وليست تشغيلاً مباشراً داخل الموقع.", pnone: "لا توجد خدمة مشاهدة رسمية مسجّلة لهذا البلد.", flatrate: "اشتراك", rent: "إيجار", buy: "شراء", plink: "عرض خيارات المشاهدة الرسمية ↗", attrib: "بيانات أماكن المشاهدة من JustWatch عبر TMDB.", country: "البلد" },
-  en: { back: "Back to library", nosrc: "No watch source for this title yet.", trailer: "Showing the official trailer instead", src: "Source", open: "Open at provider", err: "Could not load data from TMDB.", nf: "Title not found.", next: "This server failed, trying the next one…", allfail: "All available servers failed.", direct: "Direct", embed: "Embed", ptitle: "Official places to watch", pnote: "External links to official services, not playback inside this site.", pnone: "No official service listed for this country.", flatrate: "Subscription", rent: "Rent", buy: "Buy", plink: "See official viewing options ↗", attrib: "Watch-provider data by JustWatch via TMDB.", country: "Country" },
+  ar: { back: "رجوع للمكتبة", nosrc: "لا يوجد مصدر مشاهدة لهذا العمل بعد.", src: "مصدر", open: "فتح عند المزوّد", err: "تعذّر جلب البيانات من TMDB.", nf: "لم نجد هذا العمل.", next: "تعذّر هذا السيرفر، جارٍ تجربة السيرفر التالي…", allfail: "تعذّرت كل السيرفرات المتاحة.", direct: "مباشر", embed: "تضمين", ptitle: "أماكن المشاهدة الرسمية", pnote: "روابط خارجية لخدمات رسمية، وليست تشغيلاً مباشراً داخل الموقع.", pnone: "لا توجد خدمة مشاهدة رسمية مسجّلة لهذا البلد.", flatrate: "اشتراك", rent: "إيجار", buy: "شراء", plink: "عرض خيارات المشاهدة الرسمية ↗", attrib: "بيانات أماكن المشاهدة من JustWatch عبر TMDB.", country: "البلد" },
+  en: { back: "Back to library", nosrc: "No watch source for this title yet.", src: "Source", open: "Open at provider", err: "Could not load data from TMDB.", nf: "Title not found.", next: "This server failed, trying the next one…", allfail: "All available servers failed.", direct: "Direct", embed: "Embed", ptitle: "Official places to watch", pnote: "External links to official services, not playback inside this site.", pnone: "No official service listed for this country.", flatrate: "Subscription", rent: "Rent", buy: "Buy", plink: "See official viewing options ↗", attrib: "Watch-provider data by JustWatch via TMDB.", country: "Country" },
 };
 const T = S[CONFIG.ui] || S.en;
 const D = document.documentElement;
@@ -69,7 +73,11 @@ const esc = (t = "") => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<"
 const q = new URLSearchParams(location.search);
 const type = q.get("type") === "tv" ? "tv" : "movie";
 let id = +q.get("id") || 0;
-let season = +q.get("s") || 1, ep = +q.get("e") || 1, cur = null, trailerKey = "";
+let season = +q.get("s") || 1, ep = +q.get("e") || 1, cur = null;
+// اختبار تضمين صفحة Interstellar الأصلية من LookMovie2 فقط.
+// هذا لا يستخرج رابط الفيديو ولا يتجاوز تسجيل الدخول أو الاشتراك أو قيود التضمين.
+const LOOKMOVIE_TEST_ID = 157336;
+const LOOKMOVIE_TEST_URL = "https://www.lookmovie2.to/movies/view/0816692-interstellar-2014";
 const store = await new SourceStore().load(CONFIG.sourcesUrl);
 const sources = () => store.resolve(type, id, type === "tv" ? season : null, ep);
 
@@ -79,9 +87,13 @@ function play(srcs, i = 0, auto = false) {
   if (!auto) $("#note").textContent = "";
   if (!srcs.length) {
     $("#srcs").innerHTML = "";
-    box.innerHTML = trailerKey
-      ? `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(trailerKey)}" allow="fullscreen" allowfullscreen></iframe>`
-      : `<div class="msg">${esc(T.nosrc)}</div>`;
+    if (type === "movie" && id === LOOKMOVIE_TEST_ID) {
+      // إظهار مساحة الفيديو فقط من صفحة المصدر عبر قصّ الإطار؛ قد يحتاج مقدار القص ضبطاً حسب تغيّر إعلانات المصدر.
+      box.classList.add("lookmovie-crop");
+      box.innerHTML = `<iframe src="${LOOKMOVIE_TEST_URL}" title="Interstellar video" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" scrolling="no"></iframe>`;
+    } else {
+      box.innerHTML = `<div class="msg">${esc(T.nosrc)}</div>`;
+    }
     return;
   }
   $("#srcs").innerHTML = srcs.map((s, n) => `<button data-n="${n}" class="${n === i ? "on" : ""}">${esc(s.label || T.src + " " + (n + 1))}${s.quality ? " • " + esc(s.quality) : ""} • ${esc(s.type === "embed" ? T.embed : T.direct)}</button>`).join("");
@@ -127,8 +139,6 @@ try {
   const title = d.title || d.name;
   document.title = title + " — CINEMIND_x";
   $("#crumb").innerHTML = `<a href="./">${esc(T.back)}</a>`;
-  const vs = (d.videos?.results || []).filter((v) => v.site === "YouTube");
-  trailerKey = (vs.find((v) => v.type === "Trailer") || vs.find((v) => v.type === "Teaser") || {}).key || "";
   $("#info").innerHTML = `${d.poster_path ? `<img src="${poster(d.poster_path)}" alt="">` : ""}
     <div><h1>${esc(title)}</h1>
     <div class="meta">${d.vote_average ? "⭐ " + d.vote_average.toFixed(1) + " • " : ""}${(d.release_date || d.first_air_date || "").slice(0, 4)}${(d.genres || []).length ? " • " + esc(d.genres.map((g) => g.name).join("، ")) : ""}</div>
