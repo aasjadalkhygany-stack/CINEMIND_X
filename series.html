@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090807"><title>المسلسلات العالمية | CINEMIND_X</title>
+<style>
+:root{color-scheme:dark;--bg:#090807;--panel:#15110b;--gold:#d4a64a;--line:#493719;--text:#f4ead8;--muted:#b8aa91}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;padding:14px}
+.wrap{max-width:1150px;margin:auto}header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:8px 0 16px;margin-bottom:18px;flex-wrap:wrap}
+.logo{font:800 22px Georgia,serif;letter-spacing:2px;color:var(--gold)}a{color:var(--gold);text-decoration:none}
+.btn,button{background:#171109;color:var(--gold);border:1px solid var(--line);padding:10px 14px;border-radius:9px;cursor:pointer;font:inherit}
+button:disabled{opacity:.45;cursor:default}.hero{margin:12px 0 18px}.hero h1{color:var(--gold);margin:0 0 8px;font-size:clamp(22px,4vw,32px)}.hero p{color:var(--muted);margin:0;line-height:1.8}
+.search{display:flex;gap:8px;margin:18px 0}.search input{flex:1;min-width:0;background:#100d08;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:13px;font:inherit}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 12px}.section-head h2{font-size:19px;color:var(--gold);margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;transition:.15s}.card:hover{transform:translateY(-2px);border-color:var(--gold)}
+.card img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#21190d}.card-info{padding:9px}.card-title{font-size:14px;line-height:1.6;font-weight:bold}.card-meta{font-size:12px;color:var(--muted);margin-top:5px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px;margin:16px 0}
+.detail{display:grid;grid-template-columns:150px 1fr;gap:16px}.detail img{width:100%;border-radius:10px}.detail h2{color:var(--gold);margin:0 0 8px}.muted{color:var(--muted);line-height:1.8}.season-list{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.season-list button.active{background:#39280e;border-color:var(--gold)}
+.episode{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:11px 0;border-top:1px solid #332713;cursor:pointer}.episode img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:7px;background:#21190d}.episode h3{font-size:14px;margin:0 0 5px;color:var(--gold)}.episode p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}
+#status{padding:12px;border:1px solid var(--line);border-radius:9px;color:var(--muted);margin:12px 0;line-height:1.8}.hidden{display:none!important}.pager{display:flex;justify-content:center;gap:12px;align-items:center;margin:20px 0}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0}
+@media(max-width:600px){body{padding:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.detail{grid-template-columns:100px 1fr}.episode{grid-template-columns:100px 1fr}}
+</style></head>
+<body><div class="wrap">
+<header><div class="logo">CINEMIND_X</div><a class="btn" href="./">العودة للمكتبة الرئيسية</a></header>
+<section class="hero"><h1>المسلسلات العالمية</h1><p>اكتشف المسلسلات، تصفّح المواسم، وافتح تفاصيل كل حلقة. البيانات والصور تُجلب تلقائياً من TMDB.</p></section>
+<form class="search" id="searchForm"><input id="query" placeholder="ابحث عن أي مسلسل بالاسم..." autocomplete="off"><button type="submit">بحث</button></form>
+<div id="status">جاري تحميل المسلسلات...</div>
+<section id="catalog"><div class="section-head"><h2 id="catalogTitle">المسلسلات الشائعة</h2></div><div id="shows" class="grid"></div><div class="pager"><button id="prev">السابق</button><span id="pageLabel">1</span><button id="next">التالي</button></div></section>
+<section id="details" class="hidden">
+ <div class="panel"><button id="backToList">← رجوع للقائمة</button><div class="detail" style="margin-top:14px"><img id="detailPoster" alt=""><div><h2 id="detailTitle"></h2><div id="detailMeta" class="muted"></div><p id="detailOverview" class="muted"></p></div></div></div>
+ <div class="panel"><div class="section-head"><h2>المواسم</h2></div><div id="seasons" class="season-list"></div><div id="seasonInfo" class="muted"></div><div id="episodes"></div></div>
+ <div id="episodeInfo" class="panel hidden"></div>
+</section>
+<footer>© CINEMIND_X — السينما بعين مختلفة</footer>
+</div>
+<script type="module">
+const $=id=>document.getElementById(id);
+const LANG={ar:"ar-IQ",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"};
+let apiKey="14169778c1429a0057cc2e019e83b463",lang="ar-IQ";
+try{apiKey=localStorage.getItem("cm-key")||apiKey;lang=LANG[localStorage.getItem("cm-lang")]||lang}catch{}
+const cache=new Map();let page=1,mode="popular",currentShow=null,currentSeason=null;
+async function api(path,params={}){const u=new URL("https://api.themoviedb.org/3"+path);u.searchParams.set("api_key",apiKey);u.searchParams.set("language",lang);for(const [k,v] of Object.entries(params))u.searchParams.set(k,v);const key=u.toString();if(cache.has(key))return cache.get(key);const r=await fetch(key);if(!r.ok)throw Error("TMDB "+r.status);const d=await r.json();cache.set(key,d);return d}
+function msg(s){$("status").textContent=s;$("status").classList.remove("hidden")}
+function img(path,size="w342"){return path?"https://image.tmdb.org/t/p/"+size+path:""}
+function card(show){const el=document.createElement("article");el.className="card";const poster=document.createElement("img");poster.loading="lazy";poster.alt=show.name||"";poster.src=img(show.poster_path);const info=document.createElement("div");info.className="card-info";const title=document.createElement("div");title.className="card-title";title.textContent=show.name||"بدون عنوان";const meta=document.createElement("div");meta.className="card-meta";meta.textContent=[(show.first_air_date||"").slice(0,4),show.vote_average?"⭐ "+show.vote_average.toFixed(1):""].filter(Boolean).join(" • ");info.append(title,meta);el.append(poster,info);el.addEventListener("click",()=>openShow(show.id));return el}
+async function loadList(){$("details").classList.add("hidden");$("catalog").classList.remove("hidden");$("catalogTitle").textContent=mode==="search"?"نتائج البحث":"المسلسلات الشائعة";$("shows").replaceChildren();msg("جاري تحميل المسلسلات...");try{const data=mode==="search"?await api("/search/tv",{query:$("query").value.trim(),page}):await api("/tv/popular",{page});for(const s of data.results||[])$("shows").append(card(s));$("pageLabel").textContent=page+" / "+(data.total_pages||1);$("prev").disabled=page<=1;$("next").disabled=page>=(data.total_pages||1);msg(data.results?.length?"اختر أي مسلسل لعرض مواسمه وحلقاته.":"ماكو نتائج بهالصفحة.");}catch(e){msg("تعذر جلب البيانات: "+e.message+" — تأكد من اتصال الإنترنت ومفتاح TMDB.")}}
+async function openShow(id){msg("جاري تحميل معلومات المسلسل والمواسم...");try{const s=await api("/tv/"+id);currentShow=s;currentSeason=null;$("catalog").classList.add("hidden");$("details").classList.remove("hidden");$("detailPoster").src=img(s.poster_path,"w500");$("detailTitle").textContent=s.name||"مسلسل";$("detailMeta").textContent=[(s.first_air_date||"").slice(0,4),s.vote_average?"⭐ "+s.vote_average.toFixed(1)+"/10":"",s.number_of_seasons?s.number_of_seasons+" موسم":"",s.number_of_episodes?s.number_of_episodes+" حلقة":""].filter(Boolean).join(" • ");$("detailOverview").textContent=s.overview||"لا يتوفر ملخص حالياً.";const box=$("seasons");box.replaceChildren();(s.seasons||[]).filter(x=>x.season_number>=0).forEach(season=>{const b=document.createElement("button");b.textContent=season.name+" ("+season.episode_count+")";b.addEventListener("click",()=>loadSeason(season.season_number));box.append(b)});$("episodes").replaceChildren();$("seasonInfo").textContent="اختر موسماً لعرض حلقاته."; $("episodeInfo").classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"});}catch(e){msg("تعذر تحميل المسلسل: "+e.message)}}
+async function loadSeason(n){if(!currentShow)return;currentSeason=n;$("seasons").querySelectorAll("button").forEach((b,i)=>b.classList.toggle("active",i===(currentShow.seasons||[]).filter(x=>x.season_number>=0).findIndex(x=>x.season_number===n)));$("seasonInfo").textContent="جاري تحميل الحلقات...";$("episodes").replaceChildren();$("episodeInfo").classList.add("hidden");try{const data=await api("/tv/"+currentShow.id+"/season/"+n);$("seasonInfo").textContent=(data.name||("الموسم "+n))+" — "+(data.episodes?.length||0)+" حلقة";for(const ep of data.episodes||[]){const row=document.createElement("article");row.className="episode";const image=document.createElement("img");image.loading="lazy";image.alt=ep.name||"";image.src=img(ep.still_path,"w300");const text=document.createElement("div");const h=document.createElement("h3");h.textContent="الحلقة "+ep.episode_number+" — "+(ep.name||"بدون عنوان");const p=document.createElement("p");p.textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";text.append(h,p);row.append(image,text);row.addEventListener("click",()=>showEpisode(ep));$("episodes").append(row)}}catch(e){$("seasonInfo").textContent="تعذر تحميل الحلقات: "+e.message}}
+function showEpisode(ep){const box=$("episodeInfo");box.classList.remove("hidden");box.replaceChildren();const h=document.createElement("h2");h.style.color="var(--gold)";h.textContent=ep.name||("الحلقة "+ep.episode_number);const p=document.createElement("p");p.className="muted";p.textContent="المسلسل: "+currentShow.name+" • الموسم "+currentSeason+" • الحلقة "+ep.episode_number+" • "+(ep.air_date||"");const overview=document.createElement("p");overview.className="muted";overview.textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";const watch=document.createElement("a");watch.className="btn";watch.href="./watch.html?type=tv&id="+currentShow.id+"&season="+currentSeason+"&episode="+ep.episode_number;watch.textContent="فتح صفحة المشاهدة";box.append(h,p,overview,watch);box.scrollIntoView({behavior:"smooth",block:"center"})}
+$("searchForm").addEventListener("submit",e=>{e.preventDefault();if(!$("query").value.trim())return;page=1;mode="search";loadList()});
+$("prev").addEventListener("click",()=>{if(page>1){page--;loadList()}});
+$("next").addEventListener("click",()=>{page++;loadList()});
+$("backToList").addEventListener("click",()=>{$("details").classList.add("hidden");$("catalog").classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"})});
+loadList();
+</script></body></html>
