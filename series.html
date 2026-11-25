@@ -37,7 +37,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0}
 </div>
 <script type="module">
 const $=id=>document.getElementById(id);
-const LANG={ar:"ar-IQ",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"};
+const LANG={ar:"ar-SA",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"};
 let apiKey="14169778c1429a0057cc2e019e83b463",lang="ar-IQ";
 try{apiKey=localStorage.getItem("cm-key")||apiKey;lang=LANG[localStorage.getItem("cm-lang")]||lang}catch{}
 const cache=new Map();let page=1,mode="popular",currentShow=null,currentSeason=null;
@@ -46,9 +46,79 @@ function msg(s){$("status").textContent=s;$("status").classList.remove("hidden")
 function img(path,size="w342"){return path?"https://image.tmdb.org/t/p/"+size+path:""}
 function card(show){const el=document.createElement("article");el.className="card";const poster=document.createElement("img");poster.loading="lazy";poster.alt=show.name||"";poster.src=img(show.poster_path);const info=document.createElement("div");info.className="card-info";const title=document.createElement("div");title.className="card-title";title.textContent=show.name||"بدون عنوان";const meta=document.createElement("div");meta.className="card-meta";meta.textContent=[(show.first_air_date||"").slice(0,4),show.vote_average?"⭐ "+show.vote_average.toFixed(1):""].filter(Boolean).join(" • ");info.append(title,meta);el.append(poster,info);el.addEventListener("click",()=>openShow(show.id));return el}
 async function loadList(){$("details").classList.add("hidden");$("catalog").classList.remove("hidden");$("catalogTitle").textContent=mode==="search"?"نتائج البحث":"المسلسلات الشائعة";$("shows").replaceChildren();msg("جاري تحميل المسلسلات...");try{const data=mode==="search"?await api("/search/tv",{query:$("query").value.trim(),page}):await api("/tv/popular",{page});for(const s of data.results||[])$("shows").append(card(s));$("pageLabel").textContent=page+" / "+(data.total_pages||1);$("prev").disabled=page<=1;$("next").disabled=page>=(data.total_pages||1);msg(data.results?.length?"اختر أي مسلسل لعرض مواسمه وحلقاته.":"ماكو نتائج بهالصفحة.");}catch(e){msg("تعذر جلب البيانات: "+e.message+" — تأكد من اتصال الإنترنت ومفتاح TMDB.")}}
-async function openShow(id){msg("جاري تحميل معلومات المسلسل والمواسم...");try{const s=await api("/tv/"+id);currentShow=s;currentSeason=null;$("catalog").classList.add("hidden");$("details").classList.remove("hidden");$("detailPoster").src=img(s.poster_path,"w500");$("detailTitle").textContent=s.name||"مسلسل";$("detailMeta").textContent=[(s.first_air_date||"").slice(0,4),s.vote_average?"⭐ "+s.vote_average.toFixed(1)+"/10":"",s.number_of_seasons?s.number_of_seasons+" موسم":"",s.number_of_episodes?s.number_of_episodes+" حلقة":""].filter(Boolean).join(" • ");$("detailOverview").textContent=s.overview||"لا يتوفر ملخص حالياً.";const box=$("seasons");box.replaceChildren();(s.seasons||[]).filter(x=>x.season_number>=0).forEach(season=>{const b=document.createElement("button");b.textContent=season.name+" ("+season.episode_count+")";b.addEventListener("click",()=>loadSeason(season.season_number));box.append(b)});$("episodes").replaceChildren();$("seasonInfo").textContent="اختر موسماً لعرض حلقاته."; $("episodeInfo").classList.add("hidden");window.scrollTo({top:0,behavior:"smooth"});}catch(e){msg("تعذر تحميل المسلسل: "+e.message)}}
-async function loadSeason(n){if(!currentShow)return;currentSeason=n;$("seasons").querySelectorAll("button").forEach((b,i)=>b.classList.toggle("active",i===(currentShow.seasons||[]).filter(x=>x.season_number>=0).findIndex(x=>x.season_number===n)));$("seasonInfo").textContent="جاري تحميل الحلقات...";$("episodes").replaceChildren();$("episodeInfo").classList.add("hidden");try{const data=await api("/tv/"+currentShow.id+"/season/"+n);$("seasonInfo").textContent=(data.name||("الموسم "+n))+" — "+(data.episodes?.length||0)+" حلقة";for(const ep of data.episodes||[]){const row=document.createElement("article");row.className="episode";const image=document.createElement("img");image.loading="lazy";image.alt=ep.name||"";image.src=img(ep.still_path,"w300");const text=document.createElement("div");const h=document.createElement("h3");h.textContent="الحلقة "+ep.episode_number+" — "+(ep.name||"بدون عنوان");const p=document.createElement("p");p.textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";text.append(h,p);row.append(image,text);row.addEventListener("click",()=>showEpisode(ep));$("episodes").append(row)}}catch(e){$("seasonInfo").textContent="تعذر تحميل الحلقات: "+e.message}}
-function showEpisode(ep){const box=$("episodeInfo");box.classList.remove("hidden");box.replaceChildren();const h=document.createElement("h2");h.style.color="var(--gold)";h.textContent=ep.name||("الحلقة "+ep.episode_number);const p=document.createElement("p");p.className="muted";p.textContent="المسلسل: "+currentShow.name+" • الموسم "+currentSeason+" • الحلقة "+ep.episode_number+" • "+(ep.air_date||"");const overview=document.createElement("p");overview.className="muted";overview.textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";const watch=document.createElement("a");watch.className="btn";watch.href="./watch.html?type=tv&id="+currentShow.id+"&season="+currentSeason+"&episode="+ep.episode_number;watch.textContent="فتح صفحة المشاهدة";box.append(h,p,overview,watch);box.scrollIntoView({behavior:"smooth",block:"center"})}
+async function openShow(id){
+  msg("جاري تحميل معلومات المسلسل والمواسم...");
+  try{
+    const s=await api("/tv/"+id);
+    currentShow=s;currentSeason=null;
+    $("catalog").classList.add("hidden");
+    $("details").classList.remove("hidden");
+    $("detailPoster").src=img(s.poster_path,"w500");
+    $("detailTitle").textContent=s.name||"مسلسل";
+    $("detailMeta").textContent=[(s.first_air_date||"").slice(0,4),s.vote_average?"⭐ "+s.vote_average.toFixed(1)+"/10":"",s.number_of_seasons?s.number_of_seasons+" موسم":"",s.number_of_episodes?s.number_of_episodes+" حلقة":""].filter(Boolean).join(" • ");
+    $("detailOverview").textContent=s.overview||"لا يتوفر ملخص حالياً.";
+    const seasons=(s.seasons||[]).filter(x=>x.season_number>=0);
+    const box=$("seasons");box.replaceChildren();
+    $("episodes").replaceChildren();
+    $("seasonInfo").textContent="سيتم عرض حلقات جميع المواسم أدناه...";
+    $("episodeInfo").classList.add("hidden");
+    seasons.forEach(season=>{
+      const b=document.createElement("button");
+      b.textContent=season.name+" ("+season.episode_count+")";
+      b.addEventListener("click",()=>{
+        const target=document.getElementById("season-"+season.season_number);
+        if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
+      });
+      box.append(b);
+    });
+    if(!seasons.length){
+      $("seasonInfo").textContent="لا توجد مواسم مسجلة لهذا المسلسل في TMDB.";
+    }else{
+      let done=0;
+      await Promise.all(seasons.map(async season=>{
+        await loadSeason(season.season_number, true);
+        done++;
+        $("seasonInfo").textContent="تم تحميل "+done+" من "+seasons.length+" موسم.";
+      }));
+      $("seasonInfo").textContent="اكتمل تحميل جميع المواسم والحلقات ("+seasons.length+" موسم).";
+    }
+    window.scrollTo({top:0,behavior:"smooth"});
+  }catch(e){msg("تعذر تحميل المسلسل: "+e.message+" — تحقق من اتصال الإنترنت ومفتاح TMDB.")}
+}
+async function loadSeason(n, keepAll=false){
+  if(!currentShow)return;
+  currentSeason=n;
+  const holder=$("episodes");
+  const old=document.getElementById("season-"+n);
+  if(old)old.remove();
+  const group=document.createElement("section");
+  group.className="panel";
+  group.id="season-"+n;
+  const heading=document.createElement("h3");
+  heading.style.color="var(--gold)";
+  heading.textContent="الموسم "+n;
+  const list=document.createElement("div");
+  list.textContent="جاري تحميل الحلقات...";
+  group.append(heading,list);
+  holder.append(group);
+  try{
+    const data=await api("/tv/"+currentShow.id+"/season/"+n);
+    heading.textContent=(data.name||("الموسم "+n))+" — "+(data.episodes?.length||0)+" حلقة";
+    list.replaceChildren();
+    for(const ep of data.episodes||[]){
+      const row=document.createElement("article");row.className="episode";
+      const image=document.createElement("img");image.loading="lazy";image.alt=ep.name||"";image.src=img(ep.still_path,"w300");
+      const info=document.createElement("div");
+      const h=document.createElement("h3");h.textContent="الحلقة "+ep.episode_number+" — "+(ep.name||"بدون عنوان");
+      const p=document.createElement("p");p.textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";
+      info.append(h,p);row.append(image,info);
+      row.addEventListener("click",()=>showEpisode(ep,n));
+      list.append(row);
+    }
+    if(!data.episodes?.length)list.textContent="لا توجد حلقات مسجلة لهذا الموسم.";
+  }catch(e){list.textContent="تعذر تحميل الحلقات: "+e.message;}
+}
+function showEpisode(ep, seasonNo=currentSeason){const box=$("episodeInfo");box.classList.remove("hidden");box.replaceChildren();const h=document.createElement("h2");h.style.color="var(--gold)";h.textContent=ep.name||("الحلقة "+ep.episode_number);const p=document.createElement("p");p.className="muted";p.textContent="المسلسل: "+currentShow.name+" • الموسم "+seasonNo+" • الحلقة "+ep.episode_number+" • "+(ep.air_date||"");const overview=document.createElement("p");overview.className="muted";overview.textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";const watch=document.createElement("a");watch.className="btn";watch.href="./watch.html?type=tv&id="+currentShow.id+"&season="+seasonNo+"&episode="+ep.episode_number;watch.textContent="فتح صفحة المشاهدة";box.append(h,p,overview,watch);box.scrollIntoView({behavior:"smooth",block:"center"})}
 $("searchForm").addEventListener("submit",e=>{e.preventDefault();if(!$("query").value.trim())return;page=1;mode="search";loadList()});
 $("prev").addEventListener("click",()=>{if(page>1){page--;loadList()}});
 $("next").addEventListener("click",()=>{page++;loadList()});
