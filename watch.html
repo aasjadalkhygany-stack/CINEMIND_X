@@ -1,156 +1,131 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CINEMIND_x</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;800&family=Cinzel:wght@600;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090807"><title>CINEMIND_X | مشاهدة</title>
 <style>
-:root{color-scheme:dark;--bg:#0b0907;--ink:#f2e8d5;--card:#16110d;--line:#3a2d1c;--accent:#d4a64a;--mute:#a8987c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box}
-html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font-family:'Cairo',Tahoma,Arial,sans-serif;padding:14px;min-height:100%}
-.w{max-width:960px;margin:0 auto}
-.hd{display:flex;align-items:center;gap:12px;margin:4px 0 14px;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.br{font-family:'Cinzel',serif;font-weight:800;font-size:1.4rem;letter-spacing:.12em;background:linear-gradient(90deg,#f3d58a,#b78a35);-webkit-background-clip:text;background-clip:text;color:transparent;text-decoration:none}
-a{color:var(--accent)}
-select,button{font:inherit;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px;cursor:pointer}
-button.on{background:var(--accent);border-color:var(--accent);color:#1a1206;font-weight:800}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.pl{aspect-ratio:16/9;background:#050403;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;place-items:center}
-.pl video,.pl iframe{width:100%;height:100%;border:0;background:#000}
-.msg{padding:18px;color:var(--mute);text-align:center;line-height:1.9}
-.msg.err{color:var(--accent)}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-.info{display:flex;gap:16px;margin:16px 0;flex-wrap:wrap}
-.info img{width:140px;border-radius:12px;border:1px solid var(--line);align-self:flex-start}
-.info h1{margin:0 0 6px;font-size:1.5rem;color:var(--accent)}
-.meta{color:var(--mute);font-size:.9rem}
-.info>div{flex:1;min-width:220px;line-height:1.8}
-.eps{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
-.eps button{text-align:start}
-.note{color:var(--accent);font-size:.88rem;margin:6px 0;min-height:1.2em}
-.box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:14px 0;background:#100c09}
-.box h2{margin:0 0 8px;font-size:1rem;color:var(--accent)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
-.chip{border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:.82rem}
-.tiny{color:var(--mute);font-size:.75rem;line-height:1.7}
+:root{color-scheme:dark;--bg:#090807;--panel:#15110b;--gold:#d4a64a;--line:#493719;--text:#f4ead8;--muted:#b8aa91}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}body{padding:12px}
+.wrap{max-width:1100px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.logo{font-family:Georgia,serif;font-weight:800;letter-spacing:2px;color:var(--gold);font-size:22px}a{color:var(--gold);text-decoration:none}.back{border:1px solid var(--line);border-radius:9px;padding:8px 12px}
+.social{margin:12px 0 18px;padding:15px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);text-align:center}
+.social-title{margin:0 0 12px;color:var(--gold);font-size:16px}.social-links{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
+.social-links a{padding:9px 13px;border:1px solid var(--line);border-radius:9px;background:#0d0b08;font-size:14px}
+.details{display:grid;grid-template-columns:150px minmax(0,1fr);gap:15px;align-items:start;margin-bottom:17px}
+.poster{width:100%;border-radius:12px;border:1px solid var(--line);display:block;background:#17120b;object-fit:cover}
+h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold)}.meta{color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:10px}.overview{font-size:14px;line-height:1.9;color:#e4d8c2;margin:0}
+.player-title{color:var(--gold);font-size:17px;margin:0 0 10px}.player{position:relative;width:100%;aspect-ratio:16/9;min-height:220px;overflow:hidden;background:#000;border:1px solid var(--line);border-radius:12px}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.state{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-right:3px solid var(--gold);border-radius:10px;background:var(--panel);color:#c8b995;font-size:13px;line-height:1.9}
+.seasons{margin:18px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.seasons h2{color:var(--gold);font-size:19px;margin:0 0 12px}.season-list{display:grid;gap:10px}
+.season-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0d0b08}
+.season-head{width:100%;display:flex;justify-content:space-between;gap:10px;text-align:right;padding:13px;background:#17120b;color:var(--text);border:0;font-size:15px;cursor:pointer}
+.season-head b,.episode-num{color:var(--gold)}
+.episode-list{display:grid;gap:7px;padding:10px}.episode{display:flex;align-items:center;gap:10px;text-align:right;padding:10px;border:1px solid #332817;border-radius:8px;background:#100e0a;color:var(--text);cursor:pointer;width:100%}
+.episode.active{border-color:var(--gold);background:#211808}.episode-num{min-width:44px;font-weight:bold}.episode small{display:block;color:var(--muted);margin-top:4px;line-height:1.6}
+.episode-info{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:9px;color:var(--muted);line-height:1.8}
+.hidden{display:none!important}.social-brand{margin:12px 0 0;color:var(--muted);font-size:12px}
+@media(max-width:600px){body{padding:9px}.details{grid-template-columns:105px minmax(0,1fr);gap:11px}.player{min-height:190px}}
 </style>
 </head>
-<body>
-<div class="w">
-  <header class="hd"><a class="br" href="./">CINEMIND</a><span class="meta" id="crumb"></span></header>
-  <div class="pl" id="player"><div class="msg" id="ld">…</div></div>
-  <div class="row" id="srcs"></div>
-  <div class="note" id="note"></div>
-  <div class="info" id="info"></div>
-  <section class="box" id="prov" hidden></section>
-  <div id="tv" hidden>
-    <div class="row"><select id="season"></select></div>
-    <div class="eps" id="eps"></div>
-  </div>
+<body><div class="wrap">
+<header><div class="logo">CINEMIND_X</div><a class="back" href="./">العودة للمكتبة</a></header>
+
+<section class="social">
+<h2 class="social-title">يمكنكم متابعتنا على صفحاتنا في مواقع التواصل الاجتماعي</h2>
+<nav class="social-links">
+<a href="https://youtube.com/@cinemind_x?si=kz8-_KlrxYhv4TnY" target="_blank" rel="noopener noreferrer">YouTube</a>
+<a href="https://instagram.com/cinemind_x" target="_blank" rel="noopener noreferrer">Instagram</a>
+<a href="https://www.tiktok.com/@cinemind_x" target="_blank" rel="noopener noreferrer">TikTok</a>
+<a href="https://t.me/CINEMIND_X" target="_blank" rel="noopener noreferrer">Telegram</a>
+</nav><p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p>
+</section>
+
+<main>
+<div id="loading" class="state">جاري تحميل معلومات العمل...</div><div id="error" class="state hidden"></div>
+<section id="content" class="hidden">
+<div class="details"><img id="poster" class="poster" alt="ملصق العمل"><div>
+<h1 id="title"></h1><div id="meta" class="meta"></div><p id="overview" class="overview"></p></div></div>
+<h2 class="player-title">المشاهدة</h2><div id="player" class="player"></div>
+<section id="seasonsBox" class="seasons hidden">
+<h2>المواسم والحلقات</h2><div id="seasonList" class="season-list"></div>
+<div id="episodeInfo" class="episode-info hidden"></div>
+</section>
+</section>
+</main>
+<section class="social">
+<h2 class="social-title">يمكنكم متابعتنا على صفحاتنا في مواقع التواصل الاجتماعي</h2>
+<nav class="social-links">
+<a href="https://youtube.com/@cinemind_x?si=kz8-_KlrxYhv4TnY" target="_blank" rel="noopener noreferrer">YouTube</a>
+<a href="https://instagram.com/cinemind_x" target="_blank" rel="noopener noreferrer">Instagram</a>
+<a href="https://www.tiktok.com/@cinemind_x" target="_blank" rel="noopener noreferrer">TikTok</a>
+<a href="https://t.me/CINEMIND_X" target="_blank" rel="noopener noreferrer">Telegram</a>
+</nav><p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p>
+</section>
 </div>
-<script type="module">
-import { getMovie, getShow, getSeason, findId, poster } from "./js/tmdb.js";
-import { SourceStore } from "./js/sources.js";
-import { createPlayer } from "./js/player.js";
-import { CONFIG } from "./js/config.js";
-
-const S = {
-  ar: { back: "رجوع للمكتبة", nosrc: "لا يوجد مصدر مشاهدة لهذا العمل بعد.", src: "مصدر", open: "فتح عند المزوّد", err: "تعذّر جلب البيانات من TMDB.", nf: "لم نجد هذا العمل.", next: "تعذّر هذا السيرفر، جارٍ تجربة السيرفر التالي…", allfail: "تعذّرت كل السيرفرات المتاحة.", direct: "مباشر", embed: "تضمين", ptitle: "أماكن المشاهدة الرسمية", pnote: "روابط خارجية لخدمات رسمية، وليست تشغيلاً مباشراً داخل الموقع.", pnone: "لا توجد خدمة مشاهدة رسمية مسجّلة لهذا البلد.", flatrate: "اشتراك", rent: "إيجار", buy: "شراء", plink: "عرض خيارات المشاهدة الرسمية ↗", attrib: "بيانات أماكن المشاهدة من JustWatch عبر TMDB.", country: "البلد" },
-  en: { back: "Back to library", nosrc: "No watch source for this title yet.", src: "Source", open: "Open at provider", err: "Could not load data from TMDB.", nf: "Title not found.", next: "This server failed, trying the next one…", allfail: "All available servers failed.", direct: "Direct", embed: "Embed", ptitle: "Official places to watch", pnote: "External links to official services, not playback inside this site.", pnone: "No official service listed for this country.", flatrate: "Subscription", rent: "Rent", buy: "Buy", plink: "See official viewing options ↗", attrib: "Watch-provider data by JustWatch via TMDB.", country: "Country" },
-};
-const T = S[CONFIG.ui] || S.en;
-const D = document.documentElement;
-D.lang = CONFIG.ui; D.dir = CONFIG.ui === "ar" || CONFIG.ui === "fa" ? "rtl" : "ltr";
-
-const $ = (s) => document.querySelector(s);
-const esc = (t = "") => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const q = new URLSearchParams(location.search);
-const type = q.get("type") === "tv" ? "tv" : "movie";
-let id = +q.get("id") || 0;
-let season = +q.get("s") || 1, ep = +q.get("e") || 1, cur = null;
-// اختبار تضمين صفحة Interstellar من Cinema Box / Albox.
-// هذا يعرض صفحة العمل داخل iframe إذا كان مزود الخدمة يسمح بالتضمين.
-const ALBOX_TEST_ID = 157336;
-const ALBOX_TEST_URL = "https://cinema.albox.co/show/9098";
-const store = await new SourceStore().load(CONFIG.sourcesUrl);
-const sources = () => store.resolve(type, id, type === "tv" ? season : null, ep);
-
-function play(srcs, i = 0, auto = false) {
-  cur?.destroy();
-  const box = $("#player");
-  if (!auto) $("#note").textContent = "";
-  if (!srcs.length) {
-    $("#srcs").innerHTML = "";
-    if (type === "movie" && id === ALBOX_TEST_ID) {
-      $("#note").textContent = "اختبار تضمين صفحة Interstellar من Albox؛ إذا منع الموقع التضمين فستظهر رسالة أو مساحة فارغة.";
-      box.innerHTML = `<iframe src="${ALBOX_TEST_URL}" title="Interstellar — Albox" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
-    } else {
-      box.innerHTML = `<div class="msg">${esc(T.nosrc)}</div>`;
-    }
-    return;
+<script>
+const $=id=>document.getElementById(id),params=new URLSearchParams(location.search);
+const raw=(params.get("type")||params.get("media_type")||"movie").toLowerCase();
+const type=["tv","show","series"].includes(raw)?"tv":"movie";
+let id=params.get("id")||params.get("tmdb_id")||params.get("tmdbId")||params.get("movie_id")||params.get("tv_id");
+const titleQ=params.get("title")||params.get("name")||"",yearQ=params.get("year")||"";
+let key="14169778c1429a0057cc2e019e83b463",lang="ar-SA";
+try{key=localStorage.getItem("cm-key")||key;const l=localStorage.getItem("cm-lang");lang=({ar:"ar-SA",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"})[l]||lang}catch{}
+async function api(path,extra={}){const u=new URL("https://api.themoviedb.org/3"+path);u.searchParams.set("api_key",key);u.searchParams.set("language",lang);Object.entries(extra).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error("TMDB "+r.status);return r.json()}
+function fail(msg){$("loading").classList.add("hidden");$("error").textContent=msg;$("error").classList.remove("hidden")}
+function addEpisodes(season,container,seriesName){
+ const seasonNo=season.season_number;
+ api("/tv/"+id+"/season/"+seasonNo).then(data=>{
+  container.textContent="";
+  (data.episodes||[]).forEach(ep=>{
+   const b=document.createElement("button");b.type="button";b.className="episode";
+   const n=document.createElement("span");n.className="episode-num";n.textContent="E"+String(ep.episode_number).padStart(2,"0");
+   const t=document.createElement("span");t.textContent=ep.name||("الحلقة "+ep.episode_number);
+   const d=document.createElement("small");d.textContent=(ep.air_date||"")+(ep.runtime?" • "+ep.runtime+" دقيقة":"");t.appendChild(d);b.append(n,t);
+   b.addEventListener("click",()=>{
+    document.querySelectorAll(".episode.active").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+    $("episodeInfo").classList.remove("hidden");
+    $("episodeInfo").textContent="الموسم "+seasonNo+" — الحلقة "+ep.episode_number+" | "+(ep.name||"")+"\n"+(ep.overview||"لا يتوفر ملخص لهذه الحلقة.");
+    const u=new URL(location.href);u.searchParams.set("type","tv");u.searchParams.set("id",id);u.searchParams.set("season",seasonNo);u.searchParams.set("episode",ep.episode_number);history.replaceState({},"",u);
+    // Keep the viewer on this page; TMDB supplies episode metadata, while playback needs an episode-specific licensed stream.
+   });
+   container.appendChild(b);
+  });
+  container.dataset.loaded="1";
+  if(!(data.episodes||[]).length)container.textContent="لا توجد حلقات مسجلة لهذا الموسم.";
+ }).catch(e=>container.textContent="تعذر تحميل الحلقات: "+e.message);
+}
+(async()=>{
+ try{
+  let item;
+  if(id&&/^\d+$/.test(id))item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id);
+  else if(titleQ){const s=await api("/search/"+(type==="tv"?"tv":"movie"),{query:titleQ,...(yearQ?{[type==="tv"?"first_air_date_year":"year"]:yearQ}:{})});item=s.results?.[0];if(!item)throw Error("لم أجد هذا العنوان في TMDB.");id=String(item.id);item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id)}
+  else throw Error("رابط المشاهدة لا يحتوي رقم العمل أو اسمه.");
+  $("title").textContent=(item.title||item.name||titleQ)+(item.release_date||item.first_air_date?" ("+(item.release_date||item.first_air_date).slice(0,4)+")":"");
+  $("meta").textContent=[item.vote_average?"⭐ "+Number(item.vote_average).toFixed(1)+"/10":"",(item.genres||[]).map(g=>g.name).join(" • "),item.runtime?item.runtime+" دقيقة":item.episode_run_time?.[0]?item.episode_run_time[0]+" دقيقة للحلقة":""].filter(Boolean).join(" | ");
+  $("overview").textContent=item.overview||"لا يتوفر ملخص لهذا العمل حالياً.";
+  if(item.poster_path)$("poster").src="https://image.tmdb.org/t/p/w500"+item.poster_path;else $("poster").classList.add("hidden");
+  $("loading").classList.add("hidden");$("content").classList.remove("hidden");
+  if(type==="tv"){
+   $("seasonsBox").classList.remove("hidden");
+   const list=$("seasonList"),seasons=(item.seasons||[]).filter(s=>s.season_number>=0);
+   if(!seasons.length)list.textContent="لا توجد مواسم مسجلة لهذا المسلسل.";
+   seasons.forEach(season=>{
+    const card=document.createElement("div");card.className="season-card";
+    const head=document.createElement("button");head.type="button";head.className="season-head";
+    head.innerHTML="<span></span><b></b>";head.querySelector("span").textContent=season.name||("الموسم "+season.season_number);head.querySelector("b").textContent=(season.episode_count||0)+" حلقة　⌄";
+    const eps=document.createElement("div");eps.className="episode-list hidden";
+    head.addEventListener("click",()=>{const opening=eps.classList.contains("hidden");eps.classList.toggle("hidden");if(opening&&!eps.dataset.loaded){eps.textContent="جاري جلب الحلقات...";addEpisodes(season,eps,item.name||item.original_name||"");}});
+    card.append(head,eps);list.appendChild(card);
+   });
+   const wantedSeason=Number(params.get("season")),wantedEpisode=Number(params.get("episode"));
+   if(Number.isFinite(wantedSeason)){const cards=[...list.children];const idx=seasons.findIndex(s=>s.season_number===wantedSeason);if(idx>=0){cards[idx].querySelector(".season-head").click();}}
+  }else{
+   try{const ext=await api("/movie/"+id+"/external_ids");if(ext.imdb_id){const frame=document.createElement("iframe");frame.src="https://www.lookmovie2.to/movies/view/"+ext.imdb_id.replace(/^tt/,"");frame.title="مشغل الفيلم";frame.allow="fullscreen; autoplay; encrypted-media; picture-in-picture";frame.allowFullscreen=true;frame.referrerPolicy="strict-origin-when-cross-origin";$("player").appendChild(frame)}else $("player").textContent="لا يتوفر مصدر تشغيل لهذا الفيلم."}catch(e){$("player").textContent="تعذر تحميل مصدر الفيلم."}
   }
-  $("#srcs").innerHTML = srcs.map((s, n) => `<button data-n="${n}" class="${n === i ? "on" : ""}">${esc(s.label || T.src + " " + (n + 1))}${s.quality ? " • " + esc(s.quality) : ""} • ${esc(s.type === "embed" ? T.embed : T.direct)}</button>`).join("");
-  $("#srcs").onclick = (e) => { const n = e.target.closest("button")?.dataset.n; if (n != null) play(srcs, +n); };
-  cur = createPlayer(box, srcs[i], (k, why, s) => {
-    if (i + 1 < srcs.length) { $("#note").textContent = T.next; play(srcs, i + 1, true); return; }
-    $("#note").textContent = srcs.length > 1 ? T.allfail : "";
-    box.innerHTML = `<div class="msg err">${esc(why)}<br><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(T.open)}</a></div>`;
-  }, () => { if (auto) $("#note").textContent = ""; });
-}
-const COUNTRIES = ["IQ", "SA", "AE", "EG", "KW", "JO", "LB", "MA", "DZ", "TR", "FR", "GB", "US", "CA", "DE", "ES"];
-function providers(d) {
-  const all = d["watch/providers"]?.results || {};
-  let reg = "";
-  try { reg = localStorage.getItem("cm-reg") || ""; } catch {}
-  if (!COUNTRIES.includes(reg)) { const r = (navigator.language.split("-")[1] || "").toUpperCase(); reg = COUNTRIES.includes(r) ? r : "US"; }
-  const names = new Intl.DisplayNames([CONFIG.ui], { type: "region" });
-  const box = $("#prov");
-  const draw = () => {
-    const p = all[reg];
-    const groups = ["flatrate", "rent", "buy"].filter((g) => p?.[g]?.length).map((g) =>
-      `<div class="tiny">${esc(T[g])}</div><div class="chips">${[...new Set(p[g].map((x) => x.provider_name))].map((n) => `<span class="chip">${esc(n)}</span>`).join("")}</div>`).join("");
-    $("#pbody").innerHTML = groups
-      ? groups + (p.link ? `<a href="${esc(p.link)}" target="_blank" rel="noopener">${esc(T.plink)}</a>` : "")
-      : `<div class="msg">${esc(T.pnone)}</div>`;
-  };
-  box.innerHTML = `<h2>${esc(T.ptitle)}</h2><div class="tiny">${esc(T.pnote)}</div>
-    <div class="row"><select id="reg" aria-label="${esc(T.country)}">${COUNTRIES.map((c) => `<option value="${c}" ${c === reg ? "selected" : ""}>${esc(names.of(c) || c)}</option>`).join("")}</select></div>
-    <div id="pbody"></div><div class="tiny">${esc(T.attrib)}</div>`;
-  box.hidden = false;
-  $("#reg").onchange = (e) => { reg = e.target.value; try { localStorage.setItem("cm-reg", reg); } catch {} draw(); };
-  draw();
-}
-async function loadSeason() {
-  const d = await getSeason(id, season);
-  $("#eps").innerHTML = d.episodes.map((x) =>
-    `<button data-e="${x.episode_number}" class="${x.episode_number === ep ? "on" : ""}">${x.episode_number}. ${esc(x.name)}</button>`).join("");
-}
-try {
-  if (!id && q.get("q")) id = await findId(type, q.get("q"), q.get("y"));
-  if (!id) throw new Error("nf");
-  const d = type === "tv" ? await getShow(id) : await getMovie(id);
-  const title = d.title || d.name;
-  document.title = title + " — CINEMIND_x";
-  $("#crumb").innerHTML = `<a href="./">${esc(T.back)}</a>`;
-  $("#info").innerHTML = `${d.poster_path ? `<img src="${poster(d.poster_path)}" alt="">` : ""}
-    <div><h1>${esc(title)}</h1>
-    <div class="meta">${d.vote_average ? "⭐ " + d.vote_average.toFixed(1) + " • " : ""}${(d.release_date || d.first_air_date || "").slice(0, 4)}${(d.genres || []).length ? " • " + esc(d.genres.map((g) => g.name).join("، ")) : ""}</div>
-    <p>${esc(d.overview)}</p></div>`;
-  providers(d);
-  if (type === "tv") {
-    $("#tv").hidden = false;
-    $("#season").innerHTML = d.seasons.filter((s) => s.season_number > 0)
-      .map((s) => `<option value="${s.season_number}" ${s.season_number === season ? "selected" : ""}>${esc(s.name)}</option>`).join("");
-    $("#season").onchange = async (e) => { season = +e.target.value; ep = 1; await loadSeason(); play(sources()); };
-    $("#eps").onclick = (e) => { const n = e.target.closest("button")?.dataset.e; if (!n) return; ep = +n; loadSeason(); play(sources()); };
-    await loadSeason();
-  }
-  play(sources());
-} catch (e) {
-  $("#player").innerHTML = `<div class="msg err">${esc(e.message === "nf" ? T.nf : T.err)}</div>`;
-}
+  document.title=(item.title||item.name||"مشاهدة")+" — CINEMIND_X";
+ }catch(e){fail(e.message||"تعذر تحميل معلومات العمل.");}
+})();
 </script>
-</body>
-</html>
+</body></html>
