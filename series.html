@@ -38,7 +38,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0}
 <script type="module">
 const $=id=>document.getElementById(id);
 const LANG={ar:"ar-SA",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"};
-let apiKey="14169778c1429a0057cc2e019e83b463",lang="ar-IQ";
+let apiKey="14169778c1429a0057cc2e019e83b463",lang="ar-SA";
 try{apiKey=localStorage.getItem("cm-key")||apiKey;lang=LANG[localStorage.getItem("cm-lang")]||lang}catch{}
 const cache=new Map();let page=1,mode="popular",currentShow=null,currentSeason=null;
 async function api(path,params={}){const u=new URL("https://api.themoviedb.org/3"+path);u.searchParams.set("api_key",apiKey);u.searchParams.set("language",lang);for(const [k,v] of Object.entries(params))u.searchParams.set(k,v);const key=u.toString();if(cache.has(key))return cache.get(key);const r=await fetch(key);if(!r.ok)throw Error("TMDB "+r.status);const d=await r.json();cache.set(key,d);return d}
