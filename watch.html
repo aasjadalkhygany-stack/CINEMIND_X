@@ -1,131 +1,149 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
-<head>
+<html lang="ar" dir="rtl"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#090807"><title>CINEMIND_X | مشاهدة</title>
 <style>
 :root{color-scheme:dark;--bg:#090807;--panel:#15110b;--gold:#d4a64a;--line:#493719;--text:#f4ead8;--muted:#b8aa91}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}body{padding:12px}
-.wrap{max-width:1100px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 14px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}body{padding:14px}
+.wrap{max-width:1100px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 14px;margin-bottom:18px;border-bottom:1px solid var(--line)}
 .logo{font-family:Georgia,serif;font-weight:800;letter-spacing:2px;color:var(--gold);font-size:22px}a{color:var(--gold);text-decoration:none}.back{border:1px solid var(--line);border-radius:9px;padding:8px 12px}
-.social{margin:12px 0 18px;padding:15px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);text-align:center}
-.social-title{margin:0 0 12px;color:var(--gold);font-size:16px}.social-links{display:flex;flex-wrap:wrap;justify-content:center;gap:9px}
-.social-links a{padding:9px 13px;border:1px solid var(--line);border-radius:9px;background:#0d0b08;font-size:14px}
-.details{display:grid;grid-template-columns:150px minmax(0,1fr);gap:15px;align-items:start;margin-bottom:17px}
+.details{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:18px}
 .poster{width:100%;border-radius:12px;border:1px solid var(--line);display:block;background:#17120b;object-fit:cover}
-h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold)}.meta{color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:10px}.overview{font-size:14px;line-height:1.9;color:#e4d8c2;margin:0}
-.player-title{color:var(--gold);font-size:17px;margin:0 0 10px}.player{position:relative;width:100%;aspect-ratio:16/9;min-height:220px;overflow:hidden;background:#000;border:1px solid var(--line);border-radius:12px}
+h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold)}.meta{color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:12px}.overview{font-size:15px;line-height:1.9;color:#e4d8c2;margin:0}
+.player-title{color:var(--gold);font-size:16px;margin:0 0 10px}.player{position:relative;width:100%;aspect-ratio:16/9;min-height:220px;overflow:hidden;background:#000;border:1px solid var(--line);border-radius:12px}
 .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
-.state{margin:12px 0;padding:12px 14px;border:1px solid var(--line);border-right:3px solid var(--gold);border-radius:10px;background:var(--panel);color:#c8b995;font-size:13px;line-height:1.9}
-.seasons{margin:18px 0;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
-.seasons h2{color:var(--gold);font-size:19px;margin:0 0 12px}.season-list{display:grid;gap:10px}
-.season-card{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0d0b08}
-.season-head{width:100%;display:flex;justify-content:space-between;gap:10px;text-align:right;padding:13px;background:#17120b;color:var(--text);border:0;font-size:15px;cursor:pointer}
-.season-head b,.episode-num{color:var(--gold)}
-.episode-list{display:grid;gap:7px;padding:10px}.episode{display:flex;align-items:center;gap:10px;text-align:right;padding:10px;border:1px solid #332817;border-radius:8px;background:#100e0a;color:var(--text);cursor:pointer;width:100%}
-.episode.active{border-color:var(--gold);background:#211808}.episode-num{min-width:44px;font-weight:bold}.episode small{display:block;color:var(--muted);margin-top:4px;line-height:1.6}
-.episode-info{margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:9px;color:var(--muted);line-height:1.8}
-.hidden{display:none!important}.social-brand{margin:12px 0 0;color:var(--muted);font-size:12px}
-@media(max-width:600px){body{padding:9px}.details{grid-template-columns:105px minmax(0,1fr);gap:11px}.player{min-height:190px}}
-</style>
-</head>
-<body><div class="wrap">
+.state{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-right:3px solid var(--gold);border-radius:10px;background:var(--panel);color:#c8b995;font-size:13px;line-height:1.9}
+.social{margin:22px 0 8px;padding:18px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);text-align:center}
+.social-title{margin:0 0 14px;color:var(--gold);font-size:16px}
+.social-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.social-links a{display:inline-block;padding:9px 14px;border:1px solid var(--line);border-radius:9px;background:#0d0b08;font-size:14px}
+.social-links a:hover{background:#241b0d}
+.social-brand{margin:14px 0 0;color:var(--muted);font-size:12px;letter-spacing:1px}
+.seasons-wrap{margin:22px 0 26px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.seasons-heading{color:var(--gold);font-size:18px;margin:0 0 14px}
+.season-list{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:16px}
+.season-btn{border:1px solid var(--line);background:#0d0b08;color:var(--text);border-radius:9px;padding:10px 14px;font:inherit;cursor:pointer}
+.season-btn.active{background:var(--gold);color:#171006;border-color:var(--gold);font-weight:700}
+.episode-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.episode-btn{display:flex;gap:10px;align-items:center;text-align:right;width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#0d0b08;color:var(--text);font:inherit;cursor:pointer}
+.episode-btn.active{border-color:var(--gold);background:#241b0d}
+.episode-btn img{width:92px;aspect-ratio:16/9;object-fit:cover;border-radius:7px;background:#211a10}
+.episode-copy{min-width:0}.episode-copy b{display:block;color:var(--gold);font-size:14px;margin-bottom:5px}
+.episode-copy small{display:block;color:var(--muted);font-size:12px;line-height:1.5}
+.episode-info{margin-top:14px;padding:13px;border:1px solid var(--line);border-radius:10px;background:#0d0b08;line-height:1.8}
+.episode-info h3{color:var(--gold);font-size:16px;margin:0 0 7px}
+.season-state{color:var(--muted);font-size:13px;padding:10px 0}
+.hidden{display:none!important}
+@media(max-width:600px){body{padding:10px}.details{grid-template-columns:105px minmax(0,1fr);gap:12px}.player{min-height:200px;border-radius:8px}}
+</style></head><body><div class="wrap">
 <header><div class="logo">CINEMIND_X</div><a class="back" href="./">العودة للمكتبة</a></header>
-
-<section class="social">
-<h2 class="social-title">يمكنكم متابعتنا على صفحاتنا في مواقع التواصل الاجتماعي</h2>
-<nav class="social-links">
-<a href="https://youtube.com/@cinemind_x?si=kz8-_KlrxYhv4TnY" target="_blank" rel="noopener noreferrer">YouTube</a>
-<a href="https://instagram.com/cinemind_x" target="_blank" rel="noopener noreferrer">Instagram</a>
-<a href="https://www.tiktok.com/@cinemind_x" target="_blank" rel="noopener noreferrer">TikTok</a>
-<a href="https://t.me/CINEMIND_X" target="_blank" rel="noopener noreferrer">Telegram</a>
-</nav><p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p>
-</section>
-
 <main>
 <div id="loading" class="state">جاري تحميل معلومات العمل...</div><div id="error" class="state hidden"></div>
 <section id="content" class="hidden">
 <div class="details"><img id="poster" class="poster" alt="ملصق العمل"><div>
 <h1 id="title"></h1><div id="meta" class="meta"></div><p id="overview" class="overview"></p></div></div>
 <h2 class="player-title">المشاهدة</h2><div id="player" class="player"></div>
-<section id="seasonsBox" class="seasons hidden">
-<h2>المواسم والحلقات</h2><div id="seasonList" class="season-list"></div>
-<div id="episodeInfo" class="episode-info hidden"></div>
-</section>
-</section>
-</main>
-<section class="social">
-<h2 class="social-title">يمكنكم متابعتنا على صفحاتنا في مواقع التواصل الاجتماعي</h2>
-<nav class="social-links">
-<a href="https://youtube.com/@cinemind_x?si=kz8-_KlrxYhv4TnY" target="_blank" rel="noopener noreferrer">YouTube</a>
-<a href="https://instagram.com/cinemind_x" target="_blank" rel="noopener noreferrer">Instagram</a>
-<a href="https://www.tiktok.com/@cinemind_x" target="_blank" rel="noopener noreferrer">TikTok</a>
-<a href="https://t.me/CINEMIND_X" target="_blank" rel="noopener noreferrer">Telegram</a>
-</nav><p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p>
-</section>
+<div id="seasonsWrap" class="seasons-wrap hidden">
+  <h2 class="seasons-heading">📺 المواسم والحلقات</h2>
+  <div id="seasonState" class="season-state">جاري تحميل المواسم...</div>
+  <div id="seasonList" class="season-list"></div>
+  <div id="episodeList" class="episode-list"></div>
+  <div id="episodeInfo" class="episode-info hidden"></div>
 </div>
-<script>
-const $=id=>document.getElementById(id),params=new URLSearchParams(location.search);
-const raw=(params.get("type")||params.get("media_type")||"movie").toLowerCase();
-const type=["tv","show","series"].includes(raw)?"tv":"movie";
-let id=params.get("id")||params.get("tmdb_id")||params.get("tmdbId")||params.get("movie_id")||params.get("tv_id");
-const titleQ=params.get("title")||params.get("name")||"",yearQ=params.get("year")||"";
-let key="14169778c1429a0057cc2e019e83b463",lang="ar-SA";
-try{key=localStorage.getItem("cm-key")||key;const l=localStorage.getItem("cm-lang");lang=({ar:"ar-SA",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"})[l]||lang}catch{}
-async function api(path,extra={}){const u=new URL("https://api.themoviedb.org/3"+path);u.searchParams.set("api_key",key);u.searchParams.set("language",lang);Object.entries(extra).forEach(([k,v])=>u.searchParams.set(k,v));const r=await fetch(u);if(!r.ok)throw Error("TMDB "+r.status);return r.json()}
+</section></main>
+<footer class="social">
+  <h2 class="social-title">يمكنكم متابعة صفحاتنا على مواقع التواصل</h2>
+  <nav class="social-links" aria-label="صفحات CINEMIND_X">
+    <a href="https://youtube.com/@cinemind_x?si=kz8-_KlrxYhv4TnY" target="_blank" rel="noopener noreferrer">YouTube</a>
+    <a href="https://instagram.com/cinemind_x" target="_blank" rel="noopener noreferrer">Instagram</a>
+    <a href="https://www.tiktok.com/@cinemind_x" target="_blank" rel="noopener noreferrer">TikTok</a>
+    <a href="https://t.me/CINEMIND_X" target="_blank" rel="noopener noreferrer">Telegram</a>
+  </nav>
+  <p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p>
+</footer>
+</div>
+<script type="module">
+const $=id=>document.getElementById(id),p=new URLSearchParams(location.search);
+const raw=(p.get("type")||p.get("media_type")||"movie").toLowerCase(),type=["tv","show","series"].includes(raw)?"tv":"movie";
+let id=p.get("id")||p.get("tmdb_id")||p.get("tmdbId")||p.get("movie_id")||p.get("tv_id");
+const titleQ=p.get("title")||p.get("name")||"",yearQ=p.get("year")||"";
+let key="14169778c1429a0057cc2e019e83b463",lang="ar-IQ";
+try{key=localStorage.getItem("cm-key")||key;const l=localStorage.getItem("cm-lang");lang=({ar:"ar-IQ",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"})[l]||lang}catch{}
+async function api(path){const u=new URL("https://api.themoviedb.org/3"+path);u.searchParams.set("api_key",key);u.searchParams.set("language",lang);const r=await fetch(u);if(!r.ok)throw Error("TMDB "+r.status);return r.json()}
+const slug=s=>(s||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const year=d=>(d||"").slice(0,4);
 function fail(msg){$("loading").classList.add("hidden");$("error").textContent=msg;$("error").classList.remove("hidden")}
-function addEpisodes(season,container,seriesName){
- const seasonNo=season.season_number;
- api("/tv/"+id+"/season/"+seasonNo).then(data=>{
-  container.textContent="";
-  (data.episodes||[]).forEach(ep=>{
-   const b=document.createElement("button");b.type="button";b.className="episode";
-   const n=document.createElement("span");n.className="episode-num";n.textContent="E"+String(ep.episode_number).padStart(2,"0");
-   const t=document.createElement("span");t.textContent=ep.name||("الحلقة "+ep.episode_number);
-   const d=document.createElement("small");d.textContent=(ep.air_date||"")+(ep.runtime?" • "+ep.runtime+" دقيقة":"");t.appendChild(d);b.append(n,t);
-   b.addEventListener("click",()=>{
-    document.querySelectorAll(".episode.active").forEach(x=>x.classList.remove("active"));b.classList.add("active");
-    $("episodeInfo").classList.remove("hidden");
-    $("episodeInfo").textContent="الموسم "+seasonNo+" — الحلقة "+ep.episode_number+" | "+(ep.name||"")+"\n"+(ep.overview||"لا يتوفر ملخص لهذه الحلقة.");
-    const u=new URL(location.href);u.searchParams.set("type","tv");u.searchParams.set("id",id);u.searchParams.set("season",seasonNo);u.searchParams.set("episode",ep.episode_number);history.replaceState({},"",u);
-    // Keep the viewer on this page; TMDB supplies episode metadata, while playback needs an episode-specific licensed stream.
-   });
-   container.appendChild(b);
-  });
-  container.dataset.loaded="1";
-  if(!(data.episodes||[]).length)container.textContent="لا توجد حلقات مسجلة لهذا الموسم.";
- }).catch(e=>container.textContent="تعذر تحميل الحلقات: "+e.message);
-}
-(async()=>{
+async function loadSeasons(showId){
+ const list=$("seasonList"),state=$("seasonState");
  try{
-  let item;
-  if(id&&/^\d+$/.test(id))item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id);
-  else if(titleQ){const s=await api("/search/"+(type==="tv"?"tv":"movie"),{query:titleQ,...(yearQ?{[type==="tv"?"first_air_date_year":"year"]:yearQ}:{})});item=s.results?.[0];if(!item)throw Error("لم أجد هذا العنوان في TMDB.");id=String(item.id);item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id)}
-  else throw Error("رابط المشاهدة لا يحتوي رقم العمل أو اسمه.");
-  $("title").textContent=(item.title||item.name||titleQ)+(item.release_date||item.first_air_date?" ("+(item.release_date||item.first_air_date).slice(0,4)+")":"");
-  $("meta").textContent=[item.vote_average?"⭐ "+Number(item.vote_average).toFixed(1)+"/10":"",(item.genres||[]).map(g=>g.name).join(" • "),item.runtime?item.runtime+" دقيقة":item.episode_run_time?.[0]?item.episode_run_time[0]+" دقيقة للحلقة":""].filter(Boolean).join(" | ");
-  $("overview").textContent=item.overview||"لا يتوفر ملخص لهذا العمل حالياً.";
-  if(item.poster_path)$("poster").src="https://image.tmdb.org/t/p/w500"+item.poster_path;else $("poster").classList.add("hidden");
-  $("loading").classList.add("hidden");$("content").classList.remove("hidden");
-  if(type==="tv"){
-   $("seasonsBox").classList.remove("hidden");
-   const list=$("seasonList"),seasons=(item.seasons||[]).filter(s=>s.season_number>=0);
-   if(!seasons.length)list.textContent="لا توجد مواسم مسجلة لهذا المسلسل.";
-   seasons.forEach(season=>{
-    const card=document.createElement("div");card.className="season-card";
-    const head=document.createElement("button");head.type="button";head.className="season-head";
-    head.innerHTML="<span></span><b></b>";head.querySelector("span").textContent=season.name||("الموسم "+season.season_number);head.querySelector("b").textContent=(season.episode_count||0)+" حلقة　⌄";
-    const eps=document.createElement("div");eps.className="episode-list hidden";
-    head.addEventListener("click",()=>{const opening=eps.classList.contains("hidden");eps.classList.toggle("hidden");if(opening&&!eps.dataset.loaded){eps.textContent="جاري جلب الحلقات...";addEpisodes(season,eps,item.name||item.original_name||"");}});
-    card.append(head,eps);list.appendChild(card);
-   });
-   const wantedSeason=Number(params.get("season")),wantedEpisode=Number(params.get("episode"));
-   if(Number.isFinite(wantedSeason)){const cards=[...list.children];const idx=seasons.findIndex(s=>s.season_number===wantedSeason);if(idx>=0){cards[idx].querySelector(".season-head").click();}}
-  }else{
-   try{const ext=await api("/movie/"+id+"/external_ids");if(ext.imdb_id){const frame=document.createElement("iframe");frame.src="https://www.lookmovie2.to/movies/view/"+ext.imdb_id.replace(/^tt/,"");frame.title="مشغل الفيلم";frame.allow="fullscreen; autoplay; encrypted-media; picture-in-picture";frame.allowFullscreen=true;frame.referrerPolicy="strict-origin-when-cross-origin";$("player").appendChild(frame)}else $("player").textContent="لا يتوفر مصدر تشغيل لهذا الفيلم."}catch(e){$("player").textContent="تعذر تحميل مصدر الفيلم."}
-  }
-  document.title=(item.title||item.name||"مشاهدة")+" — CINEMIND_X";
- }catch(e){fail(e.message||"تعذر تحميل معلومات العمل.");}
-})();
-</script>
-</body></html>
+   const show=await api("/tv/"+showId);
+   const seasons=(show.seasons||[]).filter(s=>s.season_number>0);
+   if(!seasons.length){state.textContent="لا توجد مواسم متاحة لهذا المسلسل.";return}
+   state.textContent="اختر الموسم لعرض حلقاته.";
+   list.innerHTML="";
+   const requested=Number(p.get("season"));
+   const initial=seasons.some(s=>s.season_number===requested)?requested:seasons[0].season_number;
+   for(const season of seasons){
+     const b=document.createElement("button");
+     b.className="season-btn";
+     b.textContent=season.name||("الموسم "+season.season_number);
+     b.onclick=()=>openSeason(showId,season.season_number,b);
+     list.appendChild(b);
+   }
+   const first=[...list.children].find((b,i)=>seasons[i].season_number===initial);
+   await openSeason(showId,initial,first);
+ }catch(err){state.textContent="تعذر تحميل المواسم: "+(err.message||"خطأ في الاتصال")}
+}
+async function openSeason(showId,seasonNumber,button){
+ document.querySelectorAll(".season-btn").forEach(x=>x.classList.remove("active"));
+ if(button)button.classList.add("active");
+ const state=$("seasonState"),list=$("episodeList"),info=$("episodeInfo");
+ list.innerHTML="";info.classList.add("hidden");
+ state.textContent="جاري تحميل حلقات الموسم...";
+ try{
+   const data=await api("/tv/"+showId+"/season/"+seasonNumber);
+   const eps=data.episodes||[];
+   state.textContent=eps.length?("عدد الحلقات: "+eps.length):"لا توجد حلقات لهذا الموسم.";
+   for(const ep of eps){
+     const b=document.createElement("button");b.type="button";b.className="episode-btn";
+     const img=document.createElement("img");
+     if(ep.still_path)img.src="https://image.tmdb.org/t/p/w300"+ep.still_path;
+     img.alt="";img.loading="lazy";
+     const copy=document.createElement("span");copy.className="episode-copy";
+     const title=document.createElement("b");title.textContent="الحلقة "+ep.episode_number+" — "+(ep.name||"بدون عنوان");
+     const sub=document.createElement("small");sub.textContent=(ep.air_date||"")+(ep.runtime?" • "+ep.runtime+" دقيقة":"");
+     copy.append(title,sub);b.append(img,copy);
+     b.onclick=()=>{
+       document.querySelectorAll(".episode-btn").forEach(x=>x.classList.remove("active"));
+       b.classList.add("active");
+       info.innerHTML="";
+       const h=document.createElement("h3");h.textContent="الحلقة "+ep.episode_number+" — "+(ep.name||"بدون عنوان");
+       const desc=document.createElement("p");desc.textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";
+       info.append(h,desc);info.classList.remove("hidden");
+       const u=new URL(location.href);u.searchParams.set("season",seasonNumber);u.searchParams.set("episode",ep.episode_number);history.replaceState({}, "",u);
+     };
+     list.appendChild(b);
+   }
+   const selected=Number(p.get("episode"));
+   if(selected){const idx=eps.findIndex(e=>e.episode_number===selected);if(idx>=0)list.children[idx]?.click()}
+ }catch(err){state.textContent="تعذر تحميل الحلقات: "+(err.message||"خطأ في الاتصال")}
+}
+try{
+ let item;
+ if(id&&/^\d+$/.test(id)) item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id);
+ else if(titleQ){const s=await api("/search/"+(type==="tv"?"tv":"movie")+"?query="+encodeURIComponent(titleQ)+(yearQ?"&"+(type==="tv"?"first_air_date_year":"year")+"="+encodeURIComponent(yearQ):""));item=s.results?.[0];if(!item)throw Error("لم أجد هذا العنوان في TMDB.");id=String(item.id);item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id)}
+ else throw Error("ما وصل رقم الفيلم من المكتبة. رابط صفحة المشاهدة لازم يحتوي id أو title.");
+ const ext=await api("/"+(type==="tv"?"tv":"movie")+"/"+id+"/external_ids");
+ const name=item.title||item.name||titleQ||"عمل سينمائي",original=item.original_title||item.original_name||name,y=year(item.release_date||item.first_air_date)||yearQ,imdb=(ext.imdb_id||"").replace(/^tt/,"");
+ $("title").textContent=name+(y?" ("+y+")":"");
+ $("meta").textContent=[y,item.vote_average?"⭐ "+Number(item.vote_average).toFixed(1)+"/10":"",(item.genres||[]).map(g=>g.name).join(" • "),item.runtime?item.runtime+" دقيقة":item.episode_run_time?.[0]?item.episode_run_time[0]+" دقيقة للحلقة":""].filter(Boolean).join("  |  ");
+ $("overview").textContent=item.overview||"لا يتوفر ملخص لهذا العمل حالياً.";
+ if(item.poster_path)$("poster").src="https://image.tmdb.org/t/p/w500"+item.poster_path;else $("poster").classList.add("hidden");
+ $("loading").classList.add("hidden");$("content").classList.remove("hidden");
+ if(imdb){const section=type==="tv"?"shows":"movies",url="https://www.lookmovie2.to/"+section+"/view/"+imdb+"-"+slug(original)+"-"+(y||"");
+ const frame=document.createElement("iframe");frame.src=url;frame.title="LookMovie — "+name;frame.allow="fullscreen; autoplay; encrypted-media; picture-in-picture";frame.allowFullscreen=true;frame.referrerPolicy="strict-origin-when-cross-origin";frame.loading="lazy";$("player").appendChild(frame);
+ }else{$("player").classList.add("hidden")}
+ if(type==="tv"){$("seasonsWrap").classList.remove("hidden");await loadSeasons(id)}
+ document.title=name+" — CINEMIND_X";
+}catch(e){fail(e.message||"تعذر تحميل معلومات العمل.")}
+</script></body></html>
