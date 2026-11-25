@@ -18,8 +18,11 @@ h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold)}
 .meta{color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:12px}
 .overview{font-size:15px;line-height:1.9;color:#e4d8c2;margin:0}
 .section-title{color:var(--gold);font-size:17px;margin:22px 0 12px}
-.player{position:relative;width:100%;aspect-ratio:16/9;min-height:220px;overflow:hidden;background:#000;border:1px solid var(--line);border-radius:12px}
-.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.player{position:relative;width:100%;aspect-ratio:16/9;min-height:220px;overflow:hidden;background:#000;border:1px solid var(--line);border-radius:12px;--zoom:1;--shift-x:0px;--shift-y:0px}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;transform:translate(var(--shift-x),var(--shift-y)) scale(var(--zoom));transform-origin:center center}
+.player-tools{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:10px}
+.player-tools button{background:#17120b;color:var(--gold);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit;cursor:pointer}
+.player-tools button:active{background:#35260f}
 .state{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-right:3px solid var(--gold);border-radius:10px;background:var(--panel);color:#c8b995;font-size:13px;line-height:1.9}
 .hidden{display:none!important}
 .season-bar{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 12px}
@@ -51,20 +54,25 @@ h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold)}
     <img id="poster" class="poster" alt="ملصق العمل">
     <div><h1 id="title"></h1><div id="meta" class="meta"></div><p id="overview" class="overview"></p></div>
   </div>
-
   <section id="seriesBox" class="hidden">
     <h2 class="section-title">المواسم</h2>
     <div id="seasonBar" class="season-bar"></div>
     <h2 class="section-title" id="episodesHeading">حلقات الموسم</h2>
     <div id="episodes" class="episodes"></div>
-    <div id="episodeDetail" class="episode-detail hidden">
-      <h3 id="episodeTitle"></h3><p id="episodeOverview"></p>
-    </div>
+    <div id="episodeDetail" class="episode-detail hidden"><h3 id="episodeTitle"></h3><p id="episodeOverview"></p></div>
   </section>
-
   <h2 class="section-title">المشاهدة</h2>
   <div id="player" class="player"></div>
-  <div id="playerNote" class="state hidden">قد يعرض المصدر صفحة العمل كاملة أو يمنع التشغيل داخل الموقع. عندها استخدم خيار فتح المصدر خارجياً إن كان متاحاً.</div>
+  <div class="player-tools" aria-label="تحريك وتكبير إطار المشاهدة">
+    <button type="button" data-pan="up">↑ للأعلى</button>
+    <button type="button" data-pan="down">↓ للأسفل</button>
+    <button type="button" data-pan="left">← لليسار</button>
+    <button type="button" data-pan="right">→ لليمين</button>
+    <button type="button" data-zoom="out">− تصغير</button>
+    <button type="button" data-zoom="in">+ تكبير</button>
+    <button type="button" id="resetPlayerView">إعادة الضبط</button>
+  </div>
+  <div id="playerNote" class="state hidden">قد يعرض المصدر صفحة العمل كاملة أو يمنع التشغيل داخل الموقع. أزرار التحريك والتكبير تغيّر إطار العرض فقط، ولا تتحكم بمشغّل المصدر نفسه.</div>
 </section>
 </main>
 <footer class="social">
@@ -78,151 +86,58 @@ h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold)}
   <p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p>
 </footer>
 </div>
-
 <script type="module">
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const raw=(params.get("type")||params.get("media_type")||"movie").toLowerCase();
 const type=["tv","show","series"].includes(raw)?"tv":"movie";
 let id=params.get("id")||params.get("tmdb_id")||params.get("tmdbId")||params.get("movie_id")||params.get("tv_id");
-const titleQ=params.get("title")||params.get("name")||"";
-const yearQ=params.get("year")||"";
+const titleQ=params.get("title")||params.get("name")||"",yearQ=params.get("year")||"";
 let key="14169778c1429a0057cc2e019e83b463",lang="ar-IQ";
-try{
-  key=localStorage.getItem("cm-key")||key;
-  const savedLang=localStorage.getItem("cm-lang");
-  lang=({ar:"ar-IQ",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"})[savedLang]||lang;
-}catch{}
-async function api(path){
-  const url=new URL("https://api.themoviedb.org/3"+path);
-  url.searchParams.set("api_key",key);
-  url.searchParams.set("language",lang);
-  const response=await fetch(url);
-  if(!response.ok)throw new Error("TMDB "+response.status);
-  return response.json();
-}
+try{key=localStorage.getItem("cm-key")||key;const savedLang=localStorage.getItem("cm-lang");lang=({ar:"ar-IQ",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"})[savedLang]||lang}catch{}
+async function api(path){const url=new URL("https://api.themoviedb.org/3"+path);url.searchParams.set("api_key",key);url.searchParams.set("language",lang);const response=await fetch(url);if(!response.ok)throw new Error("TMDB "+response.status);return response.json()}
 const slug=s=>(s||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const year=d=>(d||"").slice(0,4);
-function fail(message){
-  $("loading").classList.add("hidden");
-  $("error").textContent=message;
-  $("error").classList.remove("hidden");
-}
-function renderEpisode(ep,seasonNumber){
-  $("episodeTitle").textContent=`الموسم ${seasonNumber} — الحلقة ${ep.episode_number}: ${ep.name||"بدون عنوان"}`;
-  $("episodeOverview").textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";
-  $("episodeDetail").classList.remove("hidden");
-  document.querySelectorAll(".episode-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.episode===String(ep.episode_number)));
-}
+function fail(message){$("loading").classList.add("hidden");$("error").textContent=message;$("error").classList.remove("hidden")}
+function renderEpisode(ep,seasonNumber){$("episodeTitle").textContent=`الموسم ${seasonNumber} — الحلقة ${ep.episode_number}: ${ep.name||"بدون عنوان"}`;$("episodeOverview").textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";$("episodeDetail").classList.remove("hidden");document.querySelectorAll(".episode-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.episode===String(ep.episode_number)))}
 async function loadSeason(seasonNumber){
-  $("episodes").innerHTML='<div class="state">جاري تحميل الحلقات...</div>';
-  $("episodeDetail").classList.add("hidden");
-  try{
-    const season=await api(`/tv/${id}/season/${seasonNumber}`);
-    $("episodesHeading").textContent=`حلقات ${season.name||"الموسم "+seasonNumber}`;
-    $("episodes").innerHTML="";
-    const eps=season.episodes||[];
-    if(!eps.length){$("episodes").innerHTML='<div class="state">لا توجد حلقات مسجلة لهذا الموسم.</div>';return;}
-    eps.forEach(ep=>{
-      const button=document.createElement("button");
-      button.type="button";button.className="episode-btn";
-      button.dataset.episode=String(ep.episode_number);
-      const strong=document.createElement("strong");
-      strong.textContent=`الحلقة ${ep.episode_number}: ${ep.name||"بدون عنوان"}`;
-      const span=document.createElement("span");
-      span.textContent=ep.air_date?`تاريخ العرض: ${ep.air_date}`:"";
-      button.append(strong,span);
-      button.addEventListener("click",()=>renderEpisode(ep,seasonNumber));
-      $("episodes").appendChild(button);
-    });
-    const first=eps[0];
-    if(first)renderEpisode(first,seasonNumber);
-  }catch(error){
-    $("episodes").innerHTML='<div class="state">تعذر تحميل حلقات هذا الموسم حالياً.</div>';
-  }
+  $("episodes").innerHTML='<div class="state">جاري تحميل الحلقات...</div>';$("episodeDetail").classList.add("hidden");
+  try{const season=await api(`/tv/${id}/season/${seasonNumber}`);$("episodesHeading").textContent=`حلقات ${season.name||"الموسم "+seasonNumber}`;$("episodes").innerHTML="";const eps=season.episodes||[];
+    if(!eps.length){$("episodes").innerHTML='<div class="state">لا توجد حلقات مسجلة لهذا الموسم.</div>';return}
+    eps.forEach(ep=>{const button=document.createElement("button");button.type="button";button.className="episode-btn";button.dataset.episode=String(ep.episode_number);const strong=document.createElement("strong");strong.textContent=`الحلقة ${ep.episode_number}: ${ep.name||"بدون عنوان"}`;const span=document.createElement("span");span.textContent=ep.air_date?`تاريخ العرض: ${ep.air_date}`:"";button.append(strong,span);button.addEventListener("click",()=>renderEpisode(ep,seasonNumber));$("episodes").appendChild(button)});
+    if(eps[0])renderEpisode(eps[0],seasonNumber)
+  }catch(error){$("episodes").innerHTML='<div class="state">تعذر تحميل حلقات هذا الموسم حالياً.</div>'}
+}
+function setupFrameControls(){
+  let zoom=1,shiftX=0,shiftY=0;
+  const sync=()=>{$("player").style.setProperty("--zoom",zoom);$("player").style.setProperty("--shift-x",shiftX+"px");$("player").style.setProperty("--shift-y",shiftY+"px")};
+  document.querySelectorAll("[data-pan]").forEach(button=>button.addEventListener("click",()=>{const d=button.dataset.pan;if(d==="up")shiftY-=25;if(d==="down")shiftY+=25;if(d==="left")shiftX-=25;if(d==="right")shiftX+=25;sync()}));
+  document.querySelectorAll("[data-zoom]").forEach(button=>button.addEventListener("click",()=>{zoom=Math.max(0.8,Math.min(2,zoom+(button.dataset.zoom==="in"?0.1:-0.1)));sync()}));
+  $("resetPlayerView").addEventListener("click",()=>{zoom=1;shiftX=0;shiftY=0;sync()});sync()
 }
 try{
   let item;
-  if(id&&/^\d+$/.test(id)){
-    item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id);
-  }else if(titleQ){
-    const search=await api("/search/"+(type==="tv"?"tv":"movie")+"?query="+encodeURIComponent(titleQ)+(yearQ?"&"+(type==="tv"?"first_air_date_year":"year")+"="+encodeURIComponent(yearQ):""));
-    item=search.results?.[0];
-    if(!item)throw new Error("لم أجد هذا العنوان في TMDB.");
-    id=String(item.id);
-    item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id);
-  }else{
-    throw new Error("ما وصل رقم العمل من المكتبة. رابط صفحة المشاهدة لازم يحتوي id أو title.");
-  }
-
+  if(id&&/^\d+$/.test(id))item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id);
+  else if(titleQ){const search=await api("/search/"+(type==="tv"?"tv":"movie")+"?query="+encodeURIComponent(titleQ)+(yearQ?"&"+(type==="tv"?"first_air_date_year":"year")+"="+encodeURIComponent(yearQ):""));item=search.results?.[0];if(!item)throw new Error("لم أجد هذا العنوان في TMDB.");id=String(item.id);item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id)}
+  else throw new Error("ما وصل رقم العمل من المكتبة. رابط صفحة المشاهدة لازم يحتوي id أو title.");
   const external=await api("/"+(type==="tv"?"tv":"movie")+"/"+id+"/external_ids");
-  const name=item.title||item.name||titleQ||"عمل سينمائي";
-  const original=item.original_title||item.original_name||name;
-  const releaseYear=year(item.release_date||item.first_air_date)||yearQ;
-  const imdb=(external.imdb_id||"").replace(/^tt/,"");
-
+  const name=item.title||item.name||titleQ||"عمل سينمائي",original=item.original_title||item.original_name||name,releaseYear=year(item.release_date||item.first_air_date)||yearQ,imdb=(external.imdb_id||"").replace(/^tt/,"");
   $("title").textContent=name+(releaseYear?" ("+releaseYear+")":"");
-  $("meta").textContent=[
-    releaseYear,
-    item.vote_average?"⭐ "+Number(item.vote_average).toFixed(1)+"/10":"",
-    (item.genres||[]).map(g=>g.name).join(" • "),
-    item.runtime?item.runtime+" دقيقة":item.episode_run_time?.[0]?item.episode_run_time[0]+" دقيقة للحلقة":""
-  ].filter(Boolean).join("  |  ");
+  $("meta").textContent=[releaseYear,item.vote_average?"⭐ "+Number(item.vote_average).toFixed(1)+"/10":"",(item.genres||[]).map(g=>g.name).join(" • "),item.runtime?item.runtime+" دقيقة":item.episode_run_time?.[0]?item.episode_run_time[0]+" دقيقة للحلقة":""].filter(Boolean).join("  |  ");
   $("overview").textContent=item.overview||"لا يتوفر ملخص لهذا العمل حالياً.";
-  if(item.poster_path)$("poster").src="https://image.tmdb.org/t/p/w500"+item.poster_path;
-  else $("poster").classList.add("hidden");
-
-  $("loading").classList.add("hidden");
-  $("content").classList.remove("hidden");
-
+  if(item.poster_path)$("poster").src="https://image.tmdb.org/t/p/w500"+item.poster_path;else $("poster").classList.add("hidden");
+  $("loading").classList.add("hidden");$("content").classList.remove("hidden");
   if(type==="tv"){
-    $("seriesBox").classList.remove("hidden");
-    const seasons=(item.seasons||[]).filter(season=>season.season_number>=0);
-    $("seasonBar").innerHTML="";
-    if(seasons.length){
-      seasons.forEach((season,index)=>{
-        const button=document.createElement("button");
-        button.type="button";button.className="season-btn"+(index===0?" active":"");
-        button.textContent=season.name||`الموسم ${season.season_number}`;
-        button.addEventListener("click",()=>{
-          document.querySelectorAll(".season-btn").forEach(btn=>btn.classList.remove("active"));
-          button.classList.add("active");
-          loadSeason(season.season_number);
-        });
-        $("seasonBar").appendChild(button);
-      });
-      const requestedSeason=Number(params.get("season"));
-      const initial=seasons.find(s=>s.season_number===requestedSeason)||seasons[0];
-      const initialButton=[...$("seasonBar").children].find((_,i)=>seasons[i]===initial);
-      if(initialButton){
-        document.querySelectorAll(".season-btn").forEach(btn=>btn.classList.remove("active"));
-        initialButton.classList.add("active");
-      }
-      await loadSeason(initial.season_number);
-    }else{
-      $("seasonBar").innerHTML='<div class="state">لا توجد مواسم مسجلة لهذا المسلسل.</div>';
-    }
+    $("seriesBox").classList.remove("hidden");const seasons=(item.seasons||[]).filter(s=>s.season_number>=0);$("seasonBar").innerHTML="";
+    if(seasons.length){seasons.forEach((season,index)=>{const button=document.createElement("button");button.type="button";button.className="season-btn"+(index===0?" active":"");button.textContent=season.name||`الموسم ${season.season_number}`;button.addEventListener("click",()=>{document.querySelectorAll(".season-btn").forEach(b=>b.classList.remove("active"));button.classList.add("active");loadSeason(season.season_number)});$("seasonBar").appendChild(button)});
+      const requested=Number(params.get("season")),initial=seasons.find(s=>s.season_number===requested)||seasons[0],initialButton=[...$("seasonBar").children].find((_,i)=>seasons[i]===initial);
+      if(initialButton){document.querySelectorAll(".season-btn").forEach(b=>b.classList.remove("active"));initialButton.classList.add("active")}await loadSeason(initial.season_number)
+    }else $("seasonBar").innerHTML='<div class="state">لا توجد مواسم مسجلة لهذا المسلسل.</div>'
   }
-
-  if(imdb){
-    const section=type==="tv"?"shows":"movies";
-    const sourceUrl=`https://www.lookmovie2.to/${section}/view/${imdb}-${slug(original)}-${releaseYear||""}`;
-    const frame=document.createElement("iframe");
-    frame.src=sourceUrl;
-    frame.title="LookMovie — "+name;
-    frame.allow="fullscreen; autoplay; encrypted-media; picture-in-picture";
-    frame.allowFullscreen=true;
-    frame.referrerPolicy="strict-origin-when-cross-origin";
-    frame.loading="lazy";
-    $("player").appendChild(frame);
-    $("playerNote").classList.remove("hidden");
-  }else{
-    $("player").innerHTML='<div class="state">لا يتوفر رقم IMDb لهذا العمل، لذلك لم يتم إنشاء رابط المصدر.</div>';
-  }
-  document.title=name+" — CINEMIND_X";
-}catch(error){
-  fail(error.message||"تعذر تحميل معلومات العمل.");
-}
+  if(imdb){const section=type==="tv"?"shows":"movies",sourceUrl=`https://www.lookmovie2.to/${section}/view/${imdb}-${slug(original)}-${releaseYear||""}`,frame=document.createElement("iframe");frame.src=sourceUrl;frame.title="LookMovie — "+name;frame.allow="fullscreen; autoplay; encrypted-media; picture-in-picture";frame.allowFullscreen=true;frame.referrerPolicy="strict-origin-when-cross-origin";frame.loading="lazy";$("player").appendChild(frame);$("playerNote").classList.remove("hidden");setupFrameControls()}
+  else $("player").innerHTML='<div class="state">لا يتوفر رقم IMDb لهذا العمل، لذلك لم يتم إنشاء رابط المصدر.</div>';
+  document.title=name+" — CINEMIND_X"
+}catch(error){fail(error.message||"تعذر تحميل معلومات العمل.")}
 </script>
 </body>
 </html>
