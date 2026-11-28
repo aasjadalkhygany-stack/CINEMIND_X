@@ -101,42 +101,20 @@ button.primary{background:linear-gradient(135deg,#f0cf7b,#b8862f);border:0;color
   <div id="episodeDetail" class="episode-detail hidden"><h3 id="episodeTitle"></h3><p id="episodeOverview"></p></div>
  </section>
  <h2 class="section-title">المشاهدة</h2>
- <div class="tabs">
-  <button class="tab active" id="customTab" type="button">مشغّل CINEMIND_X</button>
-  <button class="tab" id="sourceTab" type="button">مشاهدة LookMovie</button>
+ <div class="player-shell">
+  <div class="player-brandbar"><strong>CINEMIND_X</strong><span>مشاهدة داخل إطارنا</span></div>
+  <div class="video-stage is-embedded" id="videoStage">
+   <div class="empty-player" id="frameLoading"><strong>جاري فتح الفيلم...</strong>يرجى الانتظار</div>
+   <iframe id="lookmovieFrame" class="lookmovie-frame" title="مشاهدة الفيلم"
+    allow="fullscreen; autoplay; encrypted-media; picture-in-picture"
+    allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+  <div class="player-actions">
+   <button type="button" id="playerFull">⛶ ملء الشاشة</button>
+   <button type="button" id="playerOpen">فتح المصدر ↗</button>
+  </div>
  </div>
- <div id="customView">
-  <div class="player-shell">
-   <div class="player-brandbar"><strong>CINEMIND_X</strong><span>مشغّل السينما بعين مختلفة</span></div>
-   <div class="video-stage" id="videoStage">
-    <video id="video" playsinline preload="metadata"></video>
-    <div class="empty-player" id="emptyPlayer"><strong>مشغّل CINEMIND_X</strong>أضف رابط فيديو مباشر متوافق من نوع MP4 أو HLS حتى يبدأ التشغيل هنا.</div>
-   </div>
-   <div class="player-actions">
-    <button type="button" id="playerFull">⛶ ملء الشاشة</button>
-    <button type="button" id="playerOpen">فتح المصدر ↗</button>
-   </div>
-   <div class="controls">
-    <div class="progress-line"><span class="time" id="current">00:00</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="شريط التقدم"><span class="time" id="duration">00:00</span></div>
-    <div class="control-row">
-     <div class="group">
-      <button class="primary" id="play" type="button">▶ تشغيل</button>
-      <button id="back10" type="button">↶ 10</button><button id="forward10" type="button">10 ↷</button>
-      <button id="mute" type="button">🔊 الصوت</button><input class="volume" id="volume" type="range" min="0" max="1" step=".05" value="1" aria-label="مستوى الصوت">
-     </div>
-     <div class="group">
-      <select id="speed" aria-label="سرعة التشغيل"><option value=".75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select>
-      <button id="fullscreen" type="button">⛶ ملء الشاشة</button>
-     </div>
-    </div>
-   </div>
-  </div>
-  <div class="extra-grid">
-   <div class="box"><label for="vf">اختيار ملف فيديو من جهازك</label><input id="vf" type="file" accept="video/*"></div>
-   <div class="box"><label for="sf">تحميل الترجمة (SRT أو VTT)</label><input id="sf" type="file" accept=".srt,.vtt,text/vtt"></div>
-   <div class="box"><label>تزامن الترجمة</label><div class="sync"><button id="late" type="button">−0.5</button><span id="delay">0.0s</span><button id="early" type="button">+0.5</button><button id="tog" type="button">إخفاء الترجمة</button></div></div>
-  </div>
-  <div id="playerMsg" class="state">هذا المشغّل يحتاج رابط فيديو مباشر؛ رابط صفحة LookMovie وحده لا يكفي لتشغيل الفيديو داخله.</div>
+ <p class="small-note">يعرض CINEMIND_X موقع المشاهدة داخل الإطار. إذا منع LookMovie التضمين، استخدم زر «فتح المصدر».</p>
  </div>
 </section>
 </main>
@@ -184,76 +162,16 @@ async function loadSeason(sn){
   if(eps[0])renderEpisode(eps[0],sn);
  }catch(e){$('episodes').innerHTML='<div class="state">تعذر تحميل حلقات هذا الموسم حالياً.</div>'}
 }
-const videoStage=$('videoStage');
-const originalStageNodes=[...videoStage.childNodes];
-let embeddedFrame=null;
-function showTab(which){
- const custom=which==='custom';
- $('customTab').classList.toggle('active',custom);$('sourceTab').classList.toggle('active',!custom);
- if(custom){
-  videoStage.classList.remove('is-embedded');videoStage.replaceChildren(...originalStageNodes);embeddedFrame=null;
-  $('.controls').classList.remove('hidden');$('.extra-grid').classList.remove('hidden');
-  $('playerMsg').textContent='مشغّل CINEMIND_X جاهز.';
- }else{loadSource()}
-}
-$('customTab').onclick=()=>showTab('custom');
-$('sourceTab').onclick=()=>showTab('source');
-function loadSource(){
- if(!sourceUrl){$('playerMsg').textContent='لم يتوفر رابط LookMovie لهذا العمل.';return}
- if(!embeddedFrame){
-  const f=document.createElement('iframe');f.className='lookmovie-frame';f.title='LookMovie';
-  f.allow='fullscreen; autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;
-  f.referrerPolicy='strict-origin-when-cross-origin';f.src=sourceUrl;embeddedFrame=f;
- }
- videoStage.classList.add('is-embedded');videoStage.replaceChildren(embeddedFrame);
- $('.controls').classList.add('hidden');$('.extra-grid').classList.add('hidden');
- $('playerMsg').textContent='تم فتح المصدر داخل إطار CINEMIND_X. إذا رفض LookMovie التضمين، استخدم زر «فتح المصدر».';
-}
+const frame=$('lookmovieFrame');
 $('playerFull').onclick=()=>{
  const el=$('.player-shell');
  if(document.fullscreenElement)document.exitFullscreen?.();
- else if(el.requestFullscreen)el.requestFullscreen();
+ else el.requestFullscreen?.();
 };
 $('playerOpen').onclick=()=>{
  if(sourceUrl)window.open(sourceUrl,'_blank','noopener,noreferrer');
- else $('playerMsg').textContent='رابط المصدر غير متوفر لهذا العمل.';
 };
-const v=$('video');let videoObjectUrl=null,cues=[],track=null,offset=0,seekDragging=false;
-function fmt(t){if(!Number.isFinite(t)||t<0)t=0;const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=Math.floor(t%60);return(h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
-function update(){
- const d=v.duration||0,c=v.currentTime||0;$('current').textContent=fmt(c);$('duration').textContent=fmt(d);
- if(!seekDragging)$('seek').value=d?Math.round(c/d*1000):0;
- $('play').textContent=v.paused?'▶ تشغيل':'Ⅱ إيقاف';$('mute').textContent=v.muted||v.volume===0?'🔇 صامت':'🔊 الصوت';
-}
-$('play').onclick=()=>v.paused?v.play().catch(()=>$('playerMsg').textContent='تعذّر تشغيل الفيديو. تحقق من رابط الفيديو أو صيغة الملف.'):v.pause();
-$('back10').onclick=()=>v.currentTime=Math.max(0,(v.currentTime||0)-10);
-$('forward10').onclick=()=>{if(Number.isFinite(v.duration))v.currentTime=Math.min(v.duration,v.currentTime+10)};
-$('mute').onclick=()=>{v.muted=!v.muted;update()};
-$('volume').oninput=e=>{v.volume=+e.target.value;v.muted=v.volume===0;update()};
-$('speed').onchange=e=>v.playbackRate=+e.target.value;
-$('fullscreen').onclick=()=>{const el=$('.player-shell');if(document.fullscreenElement)document.exitFullscreen?.();else el.requestFullscreen?.()};
-$('seek').onpointerdown=()=>seekDragging=true;$('seek').onpointerup=()=>seekDragging=false;
-$('seek').oninput=e=>{if(Number.isFinite(v.duration))v.currentTime=(+e.target.value/1000)*v.duration};
-['timeupdate','durationchange','loadedmetadata','play','pause','volumechange','ratechange','ended'].forEach(n=>v.addEventListener(n,update));
-function parseTime(t){const m=t.trim().match(/(?:(\d+):)?(\d+):(\d+)[,.](\d+)/);return m?+(m[1]||0)*3600+(+m[2])*60+(+m[3])+(+m[4].padEnd(3,'0').slice(0,3))/1000:null}
-function parseSub(t){
- t=t.replace(/^\uFEFF/,'').replace(/[\u202a-\u202e\u200e\u200f]/g,'').replace(/\r/g,'');
- if(/^WEBVTT/.test(t))t=t.replace(/^WEBVTT[^\n]*\n/,'');
- const out=[];
- for(const block of t.split(/\n\n+/)){
-  const lines=block.split('\n').filter(x=>x.trim()),i=lines.findIndex(x=>x.includes('-->'));if(i<0)continue;
-  const [a,b]=lines[i].split('-->'),s=parseTime(a),e=parseTime(b);if(s===null||e===null)continue;
-  const body=lines.slice(i+1).join('\n').replace(/<\/?[^>]+>/g,'');if(body)out.push({s,e,body});
- }
- return out;
-}
-function renderSub(){
- if(!track){track=v.addTextTrack('subtitles','العربية','ar');track.mode='showing'}
- while(track.cues&&track.cues.length)track.removeCue(track.cues[0]);
- for(const c of cues){const cue=new VTTCue(Math.max(0,c.s+offset),Math.max(.05,c.e+offset),c.body);cue.align='center';track.addCue(cue)}
-}
-async function loadSub(buf){
- let t;try{t=new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(e){t=new TextDecoder('windows-1256').decode(buf)}
+try{t=new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(e){t=new TextDecoder('windows-1256').decode(buf)}
  cues=parseSub(t);offset=0;$('delay').textContent='0.0s';renderSub();
  $('playerMsg').textContent=cues.length?`تم تحميل الترجمة بنجاح (${cues.length} سطر).`:'لم أتمكن من قراءة الترجمة؛ تأكد أنها SRT أو VTT.';
 }
@@ -301,18 +219,12 @@ try{
  if(imdb){
   const section=type==='tv'?'shows':'movies';
   sourceUrl=`https://www.lookmovie2.to/${section}/view/${imdb}-${slug(original)}-${releaseYear||''}`;
-  $('playerMsg').textContent='تم تجهيز رابط LookMovie. اضغط «مشاهدة LookMovie» لعرضه داخل إطار CINEMIND_X.';
- }else $('playerMsg').textContent='لا يتوفر رقم IMDb لهذا العمل، لذلك لم يتم إنشاء رابط LookMovie.';
- const direct=params.get('src');
- if(direct){
-  try{const u=new URL(direct);if(!['http:','https:'].includes(u.protocol))throw Error();v.src=u.href;$('emptyPlayer').classList.add('hidden');v.load();$('playerMsg').textContent='تم تحميل رابط الفيديو المباشر. اضغط تشغيل.'}
-  catch(e){$('playerMsg').textContent='رابط الفيديو المباشر غير صالح.'}
- }
- const sub=params.get('sub');
- if(sub)fetch(sub).then(r=>{if(!r.ok)throw Error();return r.arrayBuffer()}).then(loadSub).catch(()=>$('playerMsg').textContent='تعذّر تحميل الترجمة من الرابط؛ يمكنك رفع ملف SRT أو VTT من جهازك.');
+  frame.src=sourceUrl;
+  $('frameLoading').classList.add('hidden');
+ }else {$('frameLoading').innerHTML='<strong>المصدر غير متوفر</strong>لا يتوفر رقم IMDb لهذا العمل.';}
  document.title=name+' — CINEMIND_X';
 }catch(e){fail(e.message||'تعذر تحميل معلومات العمل.')}
-window.addEventListener('beforeunload',()=>{if(videoObjectUrl)URL.revokeObjectURL(videoObjectUrl)});
+
 </script>
 </body>
 </html>
