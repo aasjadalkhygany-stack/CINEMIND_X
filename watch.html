@@ -1,143 +1,71 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#090807">
-<title>CINEMIND_X | مشاهدة</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090807"><title>CINEMIND_X | مشاهدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--bg:#090807;--panel:#15110b;--gold:#d4a64a;--line:#493719;--text:#f4ead8;--muted:#b8aa91}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
-body{padding:14px}.wrap{max-width:1100px;margin:auto}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0 14px;margin-bottom:18px;border-bottom:1px solid var(--line)}
-.logo{font-family:Georgia,serif;font-weight:800;letter-spacing:2px;color:var(--gold);font-size:22px}
-a{color:var(--gold);text-decoration:none}.back{border:1px solid var(--line);border-radius:9px;padding:8px 12px}
-.details{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:18px}
-.poster{width:100%;border-radius:12px;border:1px solid var(--line);display:block;background:#17120b;object-fit:cover}
-h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold)}
-.meta{color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:12px}
-.overview{font-size:15px;line-height:1.9;color:#e4d8c2;margin:0}
-.section-title{color:var(--gold);font-size:17px;margin:22px 0 12px}
-.player{position:relative;width:100%;aspect-ratio:16/9;min-height:220px;overflow:hidden;background:#000;border:1px solid var(--line);border-radius:12px;--zoom:1;--shift-x:0px;--shift-y:0px}
-.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000;transform:translate(var(--shift-x),var(--shift-y)) scale(var(--zoom));transform-origin:center center}
-.player-tools{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-top:10px}
-.player-tools button{background:#17120b;color:var(--gold);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font:inherit;cursor:pointer}
-.player-tools button:active{background:#35260f}
-.state{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-right:3px solid var(--gold);border-radius:10px;background:var(--panel);color:#c8b995;font-size:13px;line-height:1.9}
-.hidden{display:none!important}
-.season-bar{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 12px}
-.season-btn,.episode-btn{border:1px solid var(--line);background:#100d08;color:var(--text);border-radius:9px;padding:10px 13px;font:inherit;cursor:pointer}
-.season-btn.active,.episode-btn.active{border-color:var(--gold);background:#2a1e0b;color:var(--gold)}
-.episodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-.episode-btn{text-align:right;min-height:86px;line-height:1.7}
-.episode-btn strong{display:block;color:var(--gold);font-size:14px}
-.episode-btn span{display:block;color:var(--muted);font-size:12px}
-.episode-detail{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
-.episode-detail h3{margin:0 0 7px;color:var(--gold);font-size:16px}
-.episode-detail p{margin:0;color:#d9cbb3;font-size:13px;line-height:1.9}
-.social{margin:22px 0 8px;padding:18px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);text-align:center}
-.social-title{margin:0 0 14px;color:var(--gold);font-size:16px}
-.social-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
-.social-links a{display:inline-block;padding:9px 14px;border:1px solid var(--line);border-radius:9px;background:#0d0b08;font-size:14px}
-.social-brand{margin:14px 0 0;color:var(--muted);font-size:12px;letter-spacing:1px}
-@media(max-width:600px){body{padding:10px}.details{grid-template-columns:105px minmax(0,1fr);gap:12px}.player{min-height:200px;border-radius:8px}.episodes{grid-template-columns:1fr 1fr}.episode-btn{padding:9px}}
-</style>
-</head>
-<body>
-<div class="wrap">
+:root{color-scheme:dark;--bg:#090807;--panel:#15110b;--panel2:#1c170d;--gold:#d4a64a;--gold2:#f0cf7b;--line:#493719;--text:#f4ead8;--muted:#b8aa91}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:radial-gradient(ellipse at 50% -15%,#211a0d 0%,var(--bg) 52%);color:var(--text);font-family:Tajawal,Tahoma,Arial,sans-serif}body{padding:0 12px}.wrap{max-width:1120px;margin:auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 0 14px;margin-bottom:15px;border-bottom:1px solid var(--line)}.logo{font-family:Cinzel,Georgia,serif;font-weight:800;letter-spacing:2px;color:var(--gold2);font-size:22px;direction:ltr}.back{border:1px solid var(--line);border-radius:9px;padding:8px 12px;color:var(--gold);text-decoration:none}
+a{color:var(--gold);text-decoration:none}main{padding-bottom:8px}.state{margin-top:12px;padding:12px 14px;border:1px solid var(--line);border-right:3px solid var(--gold);border-radius:10px;background:var(--panel);color:#c8b995;font-size:13px;line-height:1.9}.hidden{display:none!important}
+.details{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;align-items:start;margin-bottom:18px}.poster{width:100%;border-radius:12px;border:1px solid var(--line);display:block;background:#17120b;object-fit:cover}h1{font-size:clamp(21px,4vw,30px);margin:0 0 8px;color:var(--gold2)}.meta{color:var(--muted);font-size:14px;line-height:1.9;margin-bottom:12px}.overview{font-size:15px;line-height:1.9;color:#e4d8c2;margin:0}.section-title{color:var(--gold2);font-size:18px;margin:22px 0 12px}
+.player-shell{border:1px solid #57431d;border-radius:15px;overflow:hidden;background:#000;box-shadow:0 15px 45px #0009,0 0 0 1px #d6a94a12}.video-stage{position:relative;background:#000;aspect-ratio:16/9;min-height:210px;display:grid;place-items:center}.video-stage video{width:100%;height:100%;max-height:72vh;display:block;object-fit:contain;background:#000}.video-stage video::cue{font-family:Tajawal,Arial,sans-serif;font-size:1.2rem;color:white;background:#000b}.empty-player{padding:24px;text-align:center;color:var(--muted);line-height:2}.empty-player strong{display:block;color:var(--gold2);font-size:18px;margin-bottom:5px}.controls{background:linear-gradient(180deg,#17130b,#100e09);padding:12px}.progress-line{display:flex;align-items:center;gap:10px;direction:ltr}.progress-line input{width:100%;accent-color:var(--gold)}.time{font-size:12px;color:var(--muted);white-space:nowrap;direction:ltr;font-variant-numeric:tabular-nums}.control-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px}.group{display:flex;align-items:center;gap:7px;flex-wrap:wrap}button,select{background:#17130b;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font:inherit;font-size:13px;cursor:pointer}button:hover,select:hover{border-color:var(--gold2);color:var(--gold2)}button.primary{background:linear-gradient(135deg,#f0cf7b,#b8862f);border:0;color:#171006;font-weight:800;min-width:78px}.volume{width:80px;accent-color:var(--gold)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tab.active{background:#2a1e0b;border-color:var(--gold);color:var(--gold2)}.source-frame{width:100%;height: min(70vh,650px);min-height:300px;border:0;display:block;background:#000}.source-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}.small-note{font-size:12px;color:var(--muted);line-height:1.8;margin:8px 2px 0}
+.season-bar{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 12px}.season-btn,.episode-btn{border:1px solid var(--line);background:#100d08;color:var(--text);border-radius:9px;padding:10px 13px;font:inherit;cursor:pointer}.season-btn.active,.episode-btn.active{border-color:var(--gold);background:#2a1e0b;color:var(--gold2)}.episodes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}.episode-btn{text-align:right;min-height:86px;line-height:1.7}.episode-btn strong{display:block;color:var(--gold2);font-size:14px}.episode-btn span{display:block;color:var(--muted);font-size:12px}.episode-detail{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}.episode-detail h3{margin:0 0 7px;color:var(--gold2);font-size:16px}.episode-detail p{margin:0;color:#d9cbb3;font-size:13px;line-height:1.9}
+.extra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:13px}.box{background:linear-gradient(145deg,#19150d,#11100d);border:1px solid var(--line);border-radius:13px;padding:12px}.box label{display:block;color:var(--gold);font-size:14px;margin-bottom:7px}.box input[type=file]{width:100%;color:var(--muted);font-size:12px}.box input[type=file]::file-selector-button{background:var(--gold);color:#1a1405;border:0;border-radius:999px;padding:6px 12px;font:inherit;font-weight:700;margin-inline-end:7px}.sync{display:flex;align-items:center;gap:8px;flex-wrap:wrap}#delay{color:var(--gold2);direction:ltr;font-weight:700}
+.social{margin:22px 0 8px;padding:18px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);text-align:center}.social-title{margin:0 0 14px;color:var(--gold2);font-size:16px}.social-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}.social-links a{display:inline-block;padding:9px 14px;border:1px solid var(--line);border-radius:9px;background:#0d0b08;font-size:14px}.social-brand{margin:14px 0 0;color:var(--muted);font-size:12px;letter-spacing:1px}
+@media(max-width:600px){body{padding:0 9px}.details{grid-template-columns:105px minmax(0,1fr);gap:12px}.video-stage{min-height:190px}.controls{padding:9px}.control-row{justify-content:center}.group{justify-content:center}.episodes{grid-template-columns:1fr 1fr}.episode-btn{padding:9px}button,select{padding:7px 10px;font-size:12px}.logo{font-size:17px}}
+</style></head>
+<body><div class="wrap">
 <header><div class="logo">CINEMIND_X</div><a class="back" href="./">العودة للمكتبة</a></header>
 <main>
-<div id="loading" class="state">جاري تحميل معلومات العمل...</div>
-<div id="error" class="state hidden"></div>
+<div id="loading" class="state">جاري تحميل معلومات العمل...</div><div id="error" class="state hidden"></div>
 <section id="content" class="hidden">
-  <div class="details">
-    <img id="poster" class="poster" alt="ملصق العمل">
-    <div><h1 id="title"></h1><div id="meta" class="meta"></div><p id="overview" class="overview"></p></div>
-  </div>
-  <section id="seriesBox" class="hidden">
-    <h2 class="section-title">المواسم</h2>
-    <div id="seasonBar" class="season-bar"></div>
-    <h2 class="section-title" id="episodesHeading">حلقات الموسم</h2>
-    <div id="episodes" class="episodes"></div>
-    <div id="episodeDetail" class="episode-detail hidden"><h3 id="episodeTitle"></h3><p id="episodeOverview"></p></div>
-  </section>
-  <h2 class="section-title">المشاهدة</h2>
-  <div id="player" class="player"></div>
-  <div class="player-tools" aria-label="تحريك وتكبير إطار المشاهدة">
-    <button type="button" data-pan="up">↑ للأعلى</button>
-    <button type="button" data-pan="down">↓ للأسفل</button>
-    <button type="button" data-pan="left">← لليسار</button>
-    <button type="button" data-pan="right">→ لليمين</button>
-    <button type="button" data-zoom="out">− تصغير</button>
-    <button type="button" data-zoom="in">+ تكبير</button>
-    <button type="button" id="resetPlayerView">إعادة الضبط</button>
-  </div>
-  <div id="playerNote" class="state hidden">قد يعرض المصدر صفحة العمل كاملة أو يمنع التشغيل داخل الموقع. أزرار التحريك والتكبير تغيّر إطار العرض فقط، ولا تتحكم بمشغّل المصدر نفسه.</div>
-</section>
-</main>
-<footer class="social">
-  <h2 class="social-title">يمكنكم متابعة صفحاتنا على مواقع التواصل</h2>
-  <nav class="social-links" aria-label="صفحات CINEMIND_X">
-    <a href="https://youtube.com/@cinemind_x?si=kz8-_KlrxYhv4TnY" target="_blank" rel="noopener noreferrer">YouTube</a>
-    <a href="https://instagram.com/cinemind_x" target="_blank" rel="noopener noreferrer">Instagram</a>
-    <a href="https://www.tiktok.com/@cinemind_x" target="_blank" rel="noopener noreferrer">TikTok</a>
-    <a href="https://t.me/CINEMIND_X" target="_blank" rel="noopener noreferrer">Telegram</a>
-  </nav>
-  <p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p>
-</footer>
+<div class="details"><img id="poster" class="poster" alt="ملصق العمل"><div><h1 id="title"></h1><div id="meta" class="meta"></div><p id="overview" class="overview"></p></div></div>
+<section id="seriesBox" class="hidden"><h2 class="section-title">المواسم</h2><div id="seasonBar" class="season-bar"></div><h2 class="section-title" id="episodesHeading">حلقات الموسم</h2><div id="episodes" class="episodes"></div><div id="episodeDetail" class="episode-detail hidden"><h3 id="episodeTitle"></h3><p id="episodeOverview"></p></div></section>
+<h2 class="section-title">المشاهدة</h2>
+<div class="tabs"><button class="tab active" id="customTab" type="button">مشغّل CINEMIND_X</button><button class="tab" id="sourceTab" type="button">مشاهدة عبر LookMovie</button></div>
+<div id="customView"><div class="player-shell"><div class="video-stage" id="videoStage"><video id="video" playsinline preload="metadata"></video><div class="empty-player" id="emptyPlayer"><strong>مشغّل CINEMIND_X</strong>أضف رابط فيديو مباشر متوافق من نوع MP4 أو HLS حتى يبدأ التشغيل هنا.</div></div>
+<div class="controls"><div class="progress-line"><span class="time" id="current">00:00</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="شريط التقدم"><span class="time" id="duration">00:00</span></div><div class="control-row"><div class="group"><button class="primary" id="play" type="button">▶ تشغيل</button><button id="back10" type="button">↶ 10</button><button id="forward10" type="button">10 ↷</button><button id="mute" type="button">🔊 الصوت</button><input class="volume" id="volume" type="range" min="0" max="1" step=".05" value="1" aria-label="مستوى الصوت"></div><div class="group"><select id="speed" aria-label="سرعة التشغيل"><option value=".75">0.75x</option><option value="1" selected>1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select><button id="fullscreen" type="button">⛶ ملء الشاشة</button></div></div></div></div>
+<div class="extra-grid"><div class="box"><label for="vf">اختيار ملف فيديو من جهازك</label><input id="vf" type="file" accept="video/*"></div><div class="box"><label for="sf">تحميل الترجمة (SRT أو VTT)</label><input id="sf" type="file" accept=".srt,.vtt,text/vtt"></div><div class="box"><label>تزامن الترجمة</label><div class="sync"><button id="late" type="button">−0.5</button><span id="delay">0.0s</span><button id="early" type="button">+0.5</button><button id="tog" type="button">إخفاء الترجمة</button></div></div></div>
+<div id="playerMsg" class="state">هذا المشغّل يحتاج رابط فيديو مباشر؛ رابط صفحة LookMovie وحده لا يكفي لتشغيل الفيديو داخله.</div></div>
+<div id="sourceView" class="hidden"><div class="source-wrap" id="sourceWrap"><div class="empty-player">اضغط الزر أدناه لتحميل صفحة المصدر.</div></div><p class="small-note">هذه صفحة المصدر الأصلية داخل إطار منفصل؛ أزرار المشغّل المخصص لا تتحكم بفيديو المصدر.</p><div class="player-tools"><button type="button" id="loadSource">تحميل صفحة LookMovie</button><button type="button" id="openSource">فتح المصدر في نافذة جديدة</button></div></div>
+</section></main>
+<footer class="social"><h2 class="social-title">يمكنكم متابعة صفحاتنا على مواقع التواصل</h2><nav class="social-links"><a href="https://youtube.com/@cinemind_x" target="_blank" rel="noopener noreferrer">YouTube</a><a href="https://www.instagram.com/cinemind_x/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.tiktok.com/@cinemind_x" target="_blank" rel="noopener noreferrer">TikTok</a><a href="https://t.me/CINEMIND_X" target="_blank" rel="noopener noreferrer">Telegram</a></nav><p class="social-brand">CINEMIND_X — السينما بعين مختلفة</p></footer>
 </div>
-<script type="module">
-const $=id=>document.getElementById(id);
-const params=new URLSearchParams(location.search);
-const raw=(params.get("type")||params.get("media_type")||"movie").toLowerCase();
-const type=["tv","show","series"].includes(raw)?"tv":"movie";
-let id=params.get("id")||params.get("tmdb_id")||params.get("tmdbId")||params.get("movie_id")||params.get("tv_id");
-const titleQ=params.get("title")||params.get("name")||"",yearQ=params.get("year")||"";
-let key="14169778c1429a0057cc2e019e83b463",lang="ar-IQ";
-try{key=localStorage.getItem("cm-key")||key;const savedLang=localStorage.getItem("cm-lang");lang=({ar:"ar-IQ",en:"en-US",fr:"fr-FR",es:"es-ES",tr:"tr-TR",fa:"fa-IR"})[savedLang]||lang}catch{}
-async function api(path){const url=new URL("https://api.themoviedb.org/3"+path);url.searchParams.set("api_key",key);url.searchParams.set("language",lang);const response=await fetch(url);if(!response.ok)throw new Error("TMDB "+response.status);return response.json()}
-const slug=s=>(s||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-const year=d=>(d||"").slice(0,4);
-function fail(message){$("loading").classList.add("hidden");$("error").textContent=message;$("error").classList.remove("hidden")}
-function renderEpisode(ep,seasonNumber){$("episodeTitle").textContent=`الموسم ${seasonNumber} — الحلقة ${ep.episode_number}: ${ep.name||"بدون عنوان"}`;$("episodeOverview").textContent=ep.overview||"لا يتوفر ملخص لهذه الحلقة.";$("episodeDetail").classList.remove("hidden");document.querySelectorAll(".episode-btn").forEach(btn=>btn.classList.toggle("active",btn.dataset.episode===String(ep.episode_number)))}
-async function loadSeason(seasonNumber){
-  $("episodes").innerHTML='<div class="state">جاري تحميل الحلقات...</div>';$("episodeDetail").classList.add("hidden");
-  try{const season=await api(`/tv/${id}/season/${seasonNumber}`);$("episodesHeading").textContent=`حلقات ${season.name||"الموسم "+seasonNumber}`;$("episodes").innerHTML="";const eps=season.episodes||[];
-    if(!eps.length){$("episodes").innerHTML='<div class="state">لا توجد حلقات مسجلة لهذا الموسم.</div>';return}
-    eps.forEach(ep=>{const button=document.createElement("button");button.type="button";button.className="episode-btn";button.dataset.episode=String(ep.episode_number);const strong=document.createElement("strong");strong.textContent=`الحلقة ${ep.episode_number}: ${ep.name||"بدون عنوان"}`;const span=document.createElement("span");span.textContent=ep.air_date?`تاريخ العرض: ${ep.air_date}`:"";button.append(strong,span);button.addEventListener("click",()=>renderEpisode(ep,seasonNumber));$("episodes").appendChild(button)});
-    if(eps[0])renderEpisode(eps[0],seasonNumber)
-  }catch(error){$("episodes").innerHTML='<div class="state">تعذر تحميل حلقات هذا الموسم حالياً.</div>'}
-}
-function setupFrameControls(){
-  let zoom=1,shiftX=0,shiftY=0;
-  const sync=()=>{$("player").style.setProperty("--zoom",zoom);$("player").style.setProperty("--shift-x",shiftX+"px");$("player").style.setProperty("--shift-y",shiftY+"px")};
-  document.querySelectorAll("[data-pan]").forEach(button=>button.addEventListener("click",()=>{const d=button.dataset.pan;if(d==="up")shiftY-=25;if(d==="down")shiftY+=25;if(d==="left")shiftX-=25;if(d==="right")shiftX+=25;sync()}));
-  document.querySelectorAll("[data-zoom]").forEach(button=>button.addEventListener("click",()=>{zoom=Math.max(0.8,Math.min(2,zoom+(button.dataset.zoom==="in"?0.1:-0.1)));sync()}));
-  $("resetPlayerView").addEventListener("click",()=>{zoom=1;shiftX=0;shiftY=0;sync()});sync()
-}
-try{
-  let item;
-  if(id&&/^\d+$/.test(id))item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id);
-  else if(titleQ){const search=await api("/search/"+(type==="tv"?"tv":"movie")+"?query="+encodeURIComponent(titleQ)+(yearQ?"&"+(type==="tv"?"first_air_date_year":"year")+"="+encodeURIComponent(yearQ):""));item=search.results?.[0];if(!item)throw new Error("لم أجد هذا العنوان في TMDB.");id=String(item.id);item=await api("/"+(type==="tv"?"tv":"movie")+"/"+id)}
-  else throw new Error("ما وصل رقم العمل من المكتبة. رابط صفحة المشاهدة لازم يحتوي id أو title.");
-  const external=await api("/"+(type==="tv"?"tv":"movie")+"/"+id+"/external_ids");
-  const name=item.title||item.name||titleQ||"عمل سينمائي",original=item.original_title||item.original_name||name,releaseYear=year(item.release_date||item.first_air_date)||yearQ,imdb=(external.imdb_id||"").replace(/^tt/,"");
-  $("title").textContent=name+(releaseYear?" ("+releaseYear+")":"");
-  $("meta").textContent=[releaseYear,item.vote_average?"⭐ "+Number(item.vote_average).toFixed(1)+"/10":"",(item.genres||[]).map(g=>g.name).join(" • "),item.runtime?item.runtime+" دقيقة":item.episode_run_time?.[0]?item.episode_run_time[0]+" دقيقة للحلقة":""].filter(Boolean).join("  |  ");
-  $("overview").textContent=item.overview||"لا يتوفر ملخص لهذا العمل حالياً.";
-  if(item.poster_path)$("poster").src="https://image.tmdb.org/t/p/w500"+item.poster_path;else $("poster").classList.add("hidden");
-  $("loading").classList.add("hidden");$("content").classList.remove("hidden");
-  if(type==="tv"){
-    $("seriesBox").classList.remove("hidden");const seasons=(item.seasons||[]).filter(s=>s.season_number>=0);$("seasonBar").innerHTML="";
-    if(seasons.length){seasons.forEach((season,index)=>{const button=document.createElement("button");button.type="button";button.className="season-btn"+(index===0?" active":"");button.textContent=season.name||`الموسم ${season.season_number}`;button.addEventListener("click",()=>{document.querySelectorAll(".season-btn").forEach(b=>b.classList.remove("active"));button.classList.add("active");loadSeason(season.season_number)});$("seasonBar").appendChild(button)});
-      const requested=Number(params.get("season")),initial=seasons.find(s=>s.season_number===requested)||seasons[0],initialButton=[...$("seasonBar").children].find((_,i)=>seasons[i]===initial);
-      if(initialButton){document.querySelectorAll(".season-btn").forEach(b=>b.classList.remove("active"));initialButton.classList.add("active")}await loadSeason(initial.season_number)
-    }else $("seasonBar").innerHTML='<div class="state">لا توجد مواسم مسجلة لهذا المسلسل.</div>'
-  }
-  if(imdb){const section=type==="tv"?"shows":"movies",sourceUrl=`https://www.lookmovie2.to/${section}/view/${imdb}-${slug(original)}-${releaseYear||""}`,frame=document.createElement("iframe");frame.src=sourceUrl;frame.title="LookMovie — "+name;frame.allow="fullscreen; autoplay; encrypted-media; picture-in-picture";frame.allowFullscreen=true;frame.referrerPolicy="strict-origin-when-cross-origin";frame.loading="lazy";$("player").appendChild(frame);$("playerNote").classList.remove("hidden");setupFrameControls()}
-  else $("player").innerHTML='<div class="state">لا يتوفر رقم IMDb لهذا العمل، لذلك لم يتم إنشاء رابط المصدر.</div>';
-  document.title=name+" — CINEMIND_X"
-}catch(error){fail(error.message||"تعذر تحميل معلومات العمل.")}
-</script>
-</body>
-</html>
+<script>
+const $=id=>document.getElementById(id),params=new URLSearchParams(location.search);
+const raw=(params.get('type')||params.get('media_type')||'movie').toLowerCase(),type=['tv','show','series'].includes(raw)?'tv':'movie';
+let id=params.get('id')||params.get('tmdb_id')||params.get('tmdbId')||params.get('movie_id')||params.get('tv_id');
+const titleQ=params.get('title')||params.get('name')||'',yearQ=params.get('year')||'';
+let key='14169778c1429a0057cc2e019e83b463',lang='ar-IQ';try{key=localStorage.getItem('cm-key')||key;const sl=localStorage.getItem('cm-lang');lang=({ar:'ar-IQ',en:'en-US',fr:'fr-FR',es:'es-ES',tr:'tr-TR',fa:'fa-IR'})[sl]||lang}catch{}
+async function api(path){const u=new URL('https://api.themoviedb.org/3'+path);u.searchParams.set('api_key',key);u.searchParams.set('language',lang);const r=await fetch(u);if(!r.ok)throw Error('TMDB '+r.status);return r.json()}
+const slug=s=>(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const year=d=>(d||'').slice(0,4);function fail(m){$('loading').classList.add('hidden');$('error').textContent=m;$('error').classList.remove('hidden')}
+let sourceUrl='';
+function renderEpisode(ep,sn){$('episodeTitle').textContent=`الموسم ${sn} — الحلقة ${ep.episode_number}: ${ep.name||'بدون عنوان'}`;$('episodeOverview').textContent=ep.overview||'لا يتوفر ملخص لهذه الحلقة.';$('episodeDetail').classList.remove('hidden');document.querySelectorAll('.episode-btn').forEach(b=>b.classList.toggle('active',b.dataset.episode===String(ep.episode_number)))}
+async function loadSeason(sn){$('episodes').innerHTML='<div class="state">جاري تحميل الحلقات...</div>';$('episodeDetail').classList.add('hidden');try{const s=await api(`/tv/${id}/season/${sn}`);$('episodesHeading').textContent=`حلقات ${s.name||'الموسم '+sn}`;$('episodes').innerHTML='';const eps=s.episodes||[];if(!eps.length){$('episodes').innerHTML='<div class="state">لا توجد حلقات مسجلة لهذا الموسم.</div>';return}eps.forEach(ep=>{const b=document.createElement('button');b.type='button';b.className='episode-btn';b.dataset.episode=String(ep.episode_number);const st=document.createElement('strong');st.textContent=`الحلقة ${ep.episode_number}: ${ep.name||'بدون عنوان'}`;const sp=document.createElement('span');sp.textContent=ep.air_date?`تاريخ العرض: ${ep.air_date}`:'';b.append(st,sp);b.addEventListener('click',()=>renderEpisode(ep,sn));$('episodes').appendChild(b)});if(eps[0])renderEpisode(eps[0],sn)}catch(e){$('episodes').innerHTML='<div class="state">تعذر تحميل حلقات هذا الموسم حالياً.</div>'}}
+function showTab(which){const custom=which==='custom';$('customView').classList.toggle('hidden',!custom);$('sourceView').classList.toggle('hidden',custom);$('customTab').classList.toggle('active',custom);$('sourceTab').classList.toggle('active',!custom)}
+$('customTab').onclick=()=>showTab('custom');$('sourceTab').onclick=()=>showTab('source');
+function loadSource(){if(!sourceUrl){$('sourceWrap').innerHTML='<div class="empty-player">لم يتوفر رابط LookMovie لهذا العمل.</div>';return}const f=document.createElement('iframe');f.className='source-frame';f.title='LookMovie source';f.allow='fullscreen; autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;f.referrerPolicy='strict-origin-when-cross-origin';f.src=sourceUrl;$('sourceWrap').replaceChildren(f)}
+$('loadSource').onclick=loadSource;$('openSource').onclick=()=>{if(sourceUrl)window.open(sourceUrl,'_blank','noopener');else $('playerMsg').textContent='لم يتوفر رابط المصدر لهذا العمل.'};
+const v=$('video');let videoObjectUrl=null,cues=[],track=null,offset=0,seekDragging=false;
+function fmt(t){if(!Number.isFinite(t)||t<0)t=0;const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=Math.floor(t%60);return(h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function update(){const d=v.duration||0,c=v.currentTime||0;$('current').textContent=fmt(c);$('duration').textContent=fmt(d);if(!seekDragging)$('seek').value=d?Math.round(c/d*1000):0;$('play').textContent=v.paused?'▶ تشغيل':'Ⅱ إيقاف';$('mute').textContent=v.muted||v.volume===0?'🔇 صامت':'🔊 الصوت'}
+$('play').onclick=()=>v.paused?v.play().catch(()=>$('playerMsg').textContent='تعذّر تشغيل الفيديو. تحقق من رابط الفيديو أو صيغة الملف.') :v.pause();$('back10').onclick=()=>v.currentTime=Math.max(0,(v.currentTime||0)-10);$('forward10').onclick=()=>{if(Number.isFinite(v.duration))v.currentTime=Math.min(v.duration,v.currentTime+10)};$('mute').onclick=()=>{v.muted=!v.muted;update()};$('volume').oninput=e=>{v.volume=+e.target.value;v.muted=v.volume===0;update()};$('speed').onchange=e=>v.playbackRate=+e.target.value;$('fullscreen').onclick=()=>{const el=$('.player-shell');if(document.fullscreenElement)document.exitFullscreen?.();else el.requestFullscreen?.()};$('seek').onpointerdown=()=>seekDragging=true;$('seek').onpointerup=()=>seekDragging=false;$('seek').oninput=e=>{if(Number.isFinite(v.duration))v.currentTime=(+e.target.value/1000)*v.duration};['timeupdate','durationchange','loadedmetadata','play','pause','volumechange','ratechange','ended'].forEach(n=>v.addEventListener(n,update));
+function parseTime(t){const m=t.trim().match(/(?:(\d+):)?(\d+):(\d+)[,.](\d+)/);return m?+(m[1]||0)*3600+(+m[2])*60+(+m[3])+(+m[4].padEnd(3,'0').slice(0,3))/1000:null}
+function parseSub(t){t=t.replace(/^\uFEFF/,'').replace(/[\u202a-\u202e\u200e\u200f]/g,'').replace(/\r/g,'');if(/^WEBVTT/.test(t))t=t.replace(/^WEBVTT[^\n]*\n/,'');const out=[];for(const block of t.split(/\n\n+/)){const lines=block.split('\n').filter(x=>x.trim()),i=lines.findIndex(x=>x.includes('-->'));if(i<0)continue;const [a,b]=lines[i].split('-->'),s=parseTime(a),e=parseTime(b);if(s===null||e===null)continue;const body=lines.slice(i+1).join('\n').replace(/<\/?[^>]+>/g,'');if(body)out.push({s,e,body})}return out}
+function renderSub(){if(!track){track=v.addTextTrack('subtitles','العربية','ar');track.mode='showing'}while(track.cues&&track.cues.length)track.removeCue(track.cues[0]);for(const c of cues){const cue=new VTTCue(Math.max(0,c.s+offset),Math.max(.05,c.e+offset),c.body);cue.align='center';track.addCue(cue)}}
+async function loadSub(buf){let t;try{t=new TextDecoder('utf-8',{fatal:true}).decode(buf)}catch(e){t=new TextDecoder('windows-1256').decode(buf)}cues=parseSub(t);offset=0;$('delay').textContent='0.0s';renderSub();$('playerMsg').textContent=cues.length?`تم تحميل الترجمة بنجاح (${cues.length} سطر).`:'لم أتمكن من قراءة الترجمة؛ تأكد أنها SRT أو VTT.'}
+$('vf').onchange=e=>{const f=e.target.files[0];if(!f)return;if(videoObjectUrl)URL.revokeObjectURL(videoObjectUrl);videoObjectUrl=URL.createObjectURL(f);v.src=videoObjectUrl;$('emptyPlayer').classList.add('hidden');v.load();$('playerMsg').textContent='تم اختيار الفيديو من جهازك.'};$('sf').onchange=async e=>{const f=e.target.files[0];if(f)await loadSub(await f.arrayBuffer())};$('tog').onclick=()=>{if(!track){$('playerMsg').textContent='حمّل ملف ترجمة أولاً.';return}const on=track.mode==='showing';track.mode=on?'hidden':'showing';$('tog').textContent=on?'إظهار الترجمة':'إخفاء الترجمة'};function shift(d){offset=Math.round((offset+d)*10)/10;$('delay').textContent=(offset>0?'+':'')+offset.toFixed(1)+'s';renderSub()}$('early').onclick=()=>shift(-.5);$('late').onclick=()=>shift(.5);
+try{let item;if(id&&/^\d+$/.test(id))item=await api('/'+(type==='tv'?'tv':'movie')+'/'+id);else if(titleQ){const s=await api('/search/'+(type==='tv'?'tv':'movie')+'?query='+encodeURIComponent(titleQ)+(yearQ?'&'+(type==='tv'?'first_air_date_year':'year')+'='+encodeURIComponent(yearQ):''));item=s.results?.[0];if(!item)throw Error('لم أجد هذا العنوان في TMDB.');id=String(item.id);item=await api('/'+(type==='tv'?'tv':'movie')+'/'+id)}else throw Error('ما وصل رقم العمل من المكتبة. رابط صفحة المشاهدة لازم يحتوي id أو title.');
+const ext=await api('/'+(type==='tv'?'tv':'movie')+'/'+id+'/external_ids');const name=item.title||item.name||titleQ||'عمل سينمائي',original=item.original_title||item.original_name||name,releaseYear=year(item.release_date||item.first_air_date)||yearQ,imdb=(ext.imdb_id||'').replace(/^tt/,'');$('title').textContent=name+(releaseYear?' ('+releaseYear+')':'');$('meta').textContent=[releaseYear,item.vote_average?'⭐ '+Number(item.vote_average).toFixed(1)+'/10':'',(item.genres||[]).map(g=>g.name).join(' • '),item.runtime?item.runtime+' دقيقة':item.episode_run_time?.[0]?item.episode_run_time[0]+' دقيقة للحلقة':''].filter(Boolean).join('  |  ');$('overview').textContent=item.overview||'لا يتوفر ملخص لهذا العمل حالياً.';if(item.poster_path)$('poster').src='https://image.tmdb.org/t/p/w500'+item.poster_path;else $('poster').classList.add('hidden');$('loading').classList.add('hidden');$('content').classList.remove('hidden');
+if(type==='tv'){$('seriesBox').classList.remove('hidden');const seasons=(item.seasons||[]).filter(s=>s.season_number>=0);$('seasonBar').innerHTML='';if(seasons.length){seasons.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.className='season-btn'+(i===0?' active':'');b.textContent=s.name||`الموسم ${s.season_number}`;b.onclick=()=>{document.querySelectorAll('.season-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');loadSeason(s.season_number)};$('seasonBar').appendChild(b)});const requested=Number(params.get('season')),initial=seasons.find(s=>s.season_number===requested)||seasons[0],b=[...$('seasonBar').children][seasons.indexOf(initial)];if(b){document.querySelectorAll('.season-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')}await loadSeason(initial.season_number)}else $('seasonBar').innerHTML='<div class="state">لا توجد مواسم مسجلة لهذا المسلسل.</div>'}
+if(imdb){const section=type==='tv'?'shows':'movies';sourceUrl=`https://www.lookmovie2.to/${section}/view/${imdb}-${slug(original)}-${releaseYear||''}`;$('playerMsg').textContent='تم تجهيز رابط LookMovie. لعرضه اضغط «مشاهدة عبر LookMovie». المشغّل المخصص يحتاج رابط فيديو مباشر منفصل.'}else $('playerMsg').textContent='لا يتوفر رقم IMDb لهذا العمل، لذلك لم يتم إنشاء رابط LookMovie.';
+const direct=params.get('src');if(direct){try{const u=new URL(direct);if(!['http:','https:'].includes(u.protocol))throw Error();v.src=u.href;$('emptyPlayer').classList.add('hidden');v.load();$('playerMsg').textContent='تم تحميل رابط الفيديو المباشر. اضغط تشغيل.'}catch(e){$('playerMsg').textContent='رابط الفيديو المباشر غير صالح.'}}
+const sub=params.get('sub');if(sub){fetch(sub).then(r=>{if(!r.ok)throw Error();return r.arrayBuffer()}).then(loadSub).catch(()=>$('playerMsg').textContent='تعذّر تحميل الترجمة من الرابط؛ يمكنك رفع ملف SRT أو VTT من جهازك.')}
+document.title=name+' — CINEMIND_X';
+}catch(e){fail(e.message||'تعذر تحميل معلومات العمل.')}
+window.addEventListener('beforeunload',()=>{if(videoObjectUrl)URL.revokeObjectURL(videoObjectUrl)});
+</script></body></html>
