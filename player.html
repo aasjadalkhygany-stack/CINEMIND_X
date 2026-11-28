@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CINEMIND_X | المشاهدة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0a09; --panel:#16120b; --line:#3a2f17; --gold:#d6a94a; --gold-soft:#a98a45;
+    --text:#ece6d8; --muted:#a89f8a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+  header{display:flex;align-items:center;justify-content:space-between;padding:16px;border-bottom:1px solid var(--line);max-width:1100px;margin:0 auto}
+  .logo{font-family:"Cinzel",Georgia,serif;color:var(--gold);letter-spacing:.14em;font-size:1.15rem;text-decoration:none;direction:ltr}
+  .back{color:var(--gold);border:1px solid var(--line);border-radius:10px;padding:6px 14px;text-decoration:none;font-size:.9rem}
+  .back:hover{border-color:var(--gold)}
+  main{max-width:1100px;margin:0 auto;padding:16px}
+  h1{font-size:1.5rem;color:var(--gold);margin:6px 0 4px;font-weight:700}
+  .sec{color:var(--gold);font-size:.9rem;margin:18px 0 8px}
+  .frame{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#000}
+  video{width:100%;max-height:72vh;display:block;background:#000}
+  video::cue{font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif;font-size:1.3rem;color:#fff;background:rgba(0,0,0,.7)}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  label{color:var(--muted);font-size:.9rem}
+  input[type=file]{max-width:200px;color:var(--muted);font-family:inherit;font-size:.85rem}
+  input[type=file]::file-selector-button{background:var(--gold);color:#1a1405;border:0;border-radius:999px;padding:6px 14px;font:inherit;font-weight:700;cursor:pointer;margin-inline-end:8px}
+  button,select{background:transparent;color:var(--text);border:1px solid var(--gold-soft);border-radius:999px;padding:6px 16px;font:inherit;cursor:pointer}
+  button:hover,select:hover{border-color:var(--gold);color:var(--gold)}
+  select option{background:var(--panel)}
+  button:focus-visible,select:focus-visible,input:focus-visible,.back:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  #delay{min-width:56px;text-align:center;color:var(--gold);direction:ltr;font-weight:700}
+  #msg{color:var(--muted);font-size:.85rem;margin-top:10px;min-height:1.4em}
+  footer{max-width:1100px;margin:22px auto 30px;padding:0 16px}
+  .soc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;text-align:center}
+  .soc p{margin:0 0 10px;color:var(--gold)}
+  .soc a{display:inline-block;margin:4px;padding:6px 16px;border:1px solid var(--line);border-radius:10px;color:var(--text);text-decoration:none;font-size:.9rem}
+  .soc a:hover{border-color:var(--gold);color:var(--gold)}
+  .soc small{display:block;margin-top:10px;color:var(--muted);font-size:.75rem}
+</style>
+</head>
+<body>
+<header>
+  <a class="back" href="/">العودة للمكتبة</a>
+  <a class="logo" href="/">CINEMIND_X</a>
+</header>
+
+<main>
+  <h1 id="title">اسم الفيلم</h1>
+  <div class="sec">المشاهدة</div>
+  <div class="frame"><video id="v" controls playsinline preload="metadata"></video></div>
+
+  <div class="bar">
+    <div class="box">
+      <label for="vf">الفيديو</label>
+      <input id="vf" type="file" accept="video/*">
+    </div>
+    <div class="box">
+      <label for="sf">الترجمة (SRT أو VTT)</label>
+      <input id="sf" type="file" accept=".srt,.vtt">
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="box">
+      <label for="speed">السرعة</label>
+      <select id="speed">
+        <option value="0.75">0.75x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.25">1.25x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2">2x</option>
+      </select>
+    </div>
+    <div class="box"><button id="tog" type="button">إخفاء الترجمة</button></div>
+    <div class="box">
+      <label>تزامن الترجمة</label>
+      <button id="late" type="button" title="الترجمة متقدمة: أخّرها">−0.5</button>
+      <span id="delay">0.0s</span>
+      <button id="early" type="button" title="الترجمة متأخرة: قدّمها">+0.5</button>
+    </div>
+  </div>
+  <div id="msg"></div>
+</main>
+
+<footer>
+  <div class="soc">
+    <p>يمكنكم متابعة صفحاتنا على مواقع التواصل</p>
+    <a href="#">Telegram</a><a href="#">TikTok</a><a href="#">Instagram</a><a href="#">YouTube</a>
+    <small>السينما بعين مختلفة — CINEMIND_X</small>
+  </div>
+</footer>
+
+<script>
+/* روابط موقعك: إمّا هنا أو في الرابط  player.html?src=...&sub=...&title=...  */
+const CONFIG = { title: "", videoUrl: "", subtitleUrl: "" };
+
+const q = new URLSearchParams(location.search);
+const title = q.get("title") || CONFIG.title;
+const videoUrl = q.get("src") || CONFIG.videoUrl;
+const subUrl = q.get("sub") || CONFIG.subtitleUrl;
+
+const $ = id => document.getElementById(id);
+const v = $("v"), msg = $("msg");
+let cues = [], offset = 0, track = null, urlToFree = null;
+
+if(title){ $("title").textContent = title; document.title = title + " | CINEMIND_X"; }
+
+function toSec(t){
+  const m = t.trim().match(/(?:(\d+):)?(\d+):(\d+)[,.](\d+)/);
+  if(!m) return null;
+  return (+(m[1]||0))*3600 + (+m[2])*60 + (+m[3]) + (+m[4].padEnd(3,"0").slice(0,3))/1000;
+}
+function parseSub(text){
+  text = text.replace(/^\uFEFF/, "").replace(/[\u202a-\u202e\u200e\u200f]/g, "").replace(/\r/g, "");
+  if(/^WEBVTT/.test(text)) text = text.replace(/^WEBVTT[^\n]*\n/, "");
+  const out = [];
+  for(const block of text.split(/\n\n+/)){
+    const lines = block.split("\n").filter(l => l.trim() !== "");
+    const i = lines.findIndex(l => l.includes("-->"));
+    if(i < 0) continue;
+    const [a, b] = lines[i].split("-->");
+    const s = toSec(a), e = toSec(b);
+    if(s === null || e === null) continue;
+    const body = lines.slice(i+1).join("\n").replace(/<\/?[^>]+>/g, "");
+    if(body) out.push({s, e, body});
+  }
+  return out;
+}
+function render(){
+  if(!track){ track = v.addTextTrack("subtitles", "العربية", "ar"); track.mode = "showing"; }
+  while(track.cues && track.cues.length) track.removeCue(track.cues[0]);
+  for(const c of cues){
+    const cue = new VTTCue(Math.max(0, c.s + offset), Math.max(0.05, c.e + offset), c.body);
+    cue.align = "center";
+    track.addCue(cue);
+  }
+}
+async function decode(buf){
+  const bytes = new Uint8Array(buf);
+  try{ return new TextDecoder("utf-8", {fatal:true}).decode(bytes); }
+  catch(_){ return new TextDecoder("windows-1256").decode(bytes); }
+}
+async function loadSub(buf){
+  cues = parseSub(await decode(buf));
+  offset = 0; $("delay").textContent = "0.0s";
+  render();
+  msg.textContent = cues.length ? "تم تحميل الترجمة: " + cues.length + " سطر" : "لم أتمكن من قراءة الترجمة. تأكد أنها SRT أو VTT.";
+}
+$("vf").onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  if(urlToFree) URL.revokeObjectURL(urlToFree);
+  urlToFree = URL.createObjectURL(f); v.src = urlToFree;
+  msg.textContent = "تم اختيار الفيديو. اختر ملف الترجمة إن لم يكن محمّلاً.";
+};
+$("sf").onchange = async e => { const f = e.target.files[0]; if(f) loadSub(await f.arrayBuffer()); };
+$("speed").onchange = e => { v.playbackRate = +e.target.value; };
+$("tog").onclick = () => {
+  if(!track) return;
+  const on = track.mode === "showing";
+  track.mode = on ? "hidden" : "showing";
+  $("tog").textContent = on ? "إظهار الترجمة" : "إخفاء الترجمة";
+};
+function shift(d){
+  offset = Math.round((offset + d) * 10) / 10;
+  $("delay").textContent = (offset > 0 ? "+" : "") + offset.toFixed(1) + "s";
+  render();
+}
+$("early").onclick = () => shift(-0.5);
+$("late").onclick = () => shift(0.5);
+
+if(videoUrl) v.src = videoUrl;
+if(subUrl){
+  fetch(subUrl).then(r => r.arrayBuffer()).then(loadSub)
+    .catch(() => { msg.textContent = "تعذّر تحميل الترجمة من الرابط. تحقق من المسار."; });
+}
+</script>
+</body>
+</html>
